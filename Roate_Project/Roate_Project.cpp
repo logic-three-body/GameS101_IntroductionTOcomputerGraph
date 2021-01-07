@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 
 constexpr double MY_PI = 3.1415926;
+inline double DEG2RAD(double deg) { return deg * MY_PI / 180; }
 
 Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
 {
@@ -27,6 +28,12 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 	// Create the model matrix for rotating the triangle around the Z axis.
 	// Then return it.
 
+	double rad = DEG2RAD(rotation_angle);
+	model << cos(rad), -sin(rad), 0, 0,
+		sin(rad), cos(rad), 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1;
+
 	return model;
 }
 
@@ -40,6 +47,14 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
 	// TODO: Implement this function
 	// Create the projection matrix for the given parameters.
 	// Then return it.
+
+	float top = -tan(DEG2RAD(eye_fov / 2.0f) * abs(zNear));
+	float right = top * aspect_ratio;
+
+	projection << zNear / right, 0, 0, 0,
+		0, zNear / top, 0, 0,
+		0, 0, (zNear + zFar) / (zNear - zFar), (2 * zNear*zFar) / (zFar - zNear),
+		0, 0, 1, 0;
 
 	return projection;
 }
