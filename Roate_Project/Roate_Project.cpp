@@ -7,56 +7,78 @@
 constexpr double MY_PI = 3.1415926;
 inline double DEG2RAD(double deg) { return deg * MY_PI / 180; }
 
+Eigen::Matrix4f get_model_matrix(float angle)
+{
+	Eigen::Matrix4f rotation;
+	angle = angle * MY_PI / 180.f;
+	rotation << cos(angle), 0, sin(angle), 0,
+		0, 1, 0, 0,
+		-sin(angle), 0, cos(angle), 0,
+		0, 0, 0, 1;
+
+	Eigen::Matrix4f scale;
+	scale << 2.5, 0, 0, 0,
+		0, 2.5, 0, 0,
+		0, 0, 2.5, 0,
+		0, 0, 0, 1;
+
+	Eigen::Matrix4f translate;
+	translate << 1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1;
+
+	return translate * rotation * scale;
+}
+
 Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
 {
 	Eigen::Matrix4f view = Eigen::Matrix4f::Identity();
 
 	Eigen::Matrix4f translate;
-	translate << 1, 0, 0, -eye_pos[0], 
-				 0, 1, 0, -eye_pos[1],
-				 0, 0, 1,-eye_pos[2], 
-				 0, 0, 0, 1;
+	translate << 1, 0, 0, -eye_pos[0],
+		0, 1, 0, -eye_pos[1],
+		0, 0, 1, -eye_pos[2],
+		0, 0, 0, 1;
 
 	view = translate * view;
 
 	return view;
 }
 
-Eigen::Matrix4f get_model_matrix(float rotation_angle)
+Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float zFar)
 {
-	Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
-
-	// TODO: Implement this function
-	// Create the model matrix for rotating the triangle around the Z axis.
-	// Then return it.
-
-	double rad = DEG2RAD(rotation_angle);
-	model << cos(rad), -sin(rad), 0, 0,
-			 sin(rad), cos(rad), 0, 0,
-			 0, 0, 1, 0,
-			 0, 0, 0, 1;
-
-	return model;
-}
-
-Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
-	float zNear, float zFar)
-{
-	// Students will implement this function
-
 	Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
+	Eigen::Matrix4f M_persp2ortho(4, 4);
+	Eigen::Matrix4f M_ortho_scale(4, 4);
+	Eigen::Matrix4f M_ortho_trans(4, 4);
 
-	// TODO: Implement this function
-	// Create the projection matrix for the given parameters.
-	// Then return it.
+	float angle = eye_fov * MY_PI / 180.0; // half angle
+	float height = zNear * tan(angle) * 2;
+	float width = height * aspect_ratio;
 
-	float top = -tan(DEG2RAD(eye_fov / 2.0f) * abs(zNear));
-	float right = top * aspect_ratio;
+	auto t = -zNear * tan(angle / 2);
+	auto r = t * aspect_ratio;
+	auto l = -r;
+	auto b = -t;
 
-	projection << zNear / right, 0, 0, 0,
-				  0, zNear / top, 0, 0,
-				  0, 0, (zNear + zFar) / (zNear - zFar), (2 * zNear*zFar) / (zFar - zNear),
-				  0, 0, 1, 0;
+	M_persp2ortho << zNear, 0, 0, 0,
+		0, zNear, 0, 0,
+		0, 0, zNear + zFar, -zNear * zFar,
+		0, 0, 1, 0;
+
+	M_ortho_scale << 2 / (r - l), 0, 0, 0,
+		0, 2 / (t - b), 0, 0,
+		0, 0, 2 / (zNear - zFar), 0,
+		0, 0, 0, 1;
+
+	M_ortho_trans << 1, 0, 0, -(r + l) / 2,
+		0, 1, 0, -(t + b) / 2,
+		0, 0, 1, -(zNear + zFar) / 2,
+		0, 0, 0, 1;
+
+	Eigen::Matrix4f M_ortho = M_ortho_scale * M_ortho_trans;
+	projection = M_ortho * M_persp2ortho * projection;
 
 	return projection;
 }
