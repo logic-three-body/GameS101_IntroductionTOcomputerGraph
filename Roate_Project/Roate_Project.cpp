@@ -11,15 +11,20 @@ Eigen::Matrix4f get_model_matrix(float angle)
 {
 	Eigen::Matrix4f rotation;
 	angle = angle * MY_PI / 180.f;
-	rotation << cos(angle), 0, sin(angle), 0,
+	rotation << cos(angle), 0, sin(angle), 0,//绕Y旋转
 		0, 1, 0, 0,
 		-sin(angle), 0, cos(angle), 0,
 		0, 0, 0, 1;
 
 	Eigen::Matrix4f scale;
-	scale << 2.5, 0, 0, 0,
-		0, 2.5, 0, 0,
-		0, 0, 2.5, 0,
+	//scale << 2.5, 0, 0, 0,
+	//	0, 2.5, 0, 0,
+	//	0, 0, 2.5, 0,
+	//	0, 0, 0, 1;
+
+	scale << 0.5, 0, 0, 0,
+		0, 0.5, 0, 0,
+		0, 0, 0.5, 0,
 		0, 0, 0, 1;
 
 	Eigen::Matrix4f translate;
@@ -27,6 +32,11 @@ Eigen::Matrix4f get_model_matrix(float angle)
 		0, 1, 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1;
+
+	//translate << 1, 0, 0, 2,
+	//	0, 1, 0, 2,
+	//	0, 0, 1, 2,
+	//	0, 0, 0, 1;
 
 	return translate * rotation * scale;
 }
@@ -132,9 +142,9 @@ int main(int argc, const char** argv)
 	while (key != 27) {
 		r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 
-		r.set_model(get_model_matrix(angle));
-		r.set_view(get_view_matrix(eye_pos));
-		r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
+		r.set_model(get_model_matrix(angle));//angle在变，键盘A+D控制的是angle
+		r.set_view(get_view_matrix(eye_pos));//eye_pos不变
+		r.set_projection(get_projection_matrix(45, 1, 0.1, 50));//projection参数不变
 
 		r.draw(pos_id, ind_id, rst::Primitive::Triangle);
 
@@ -142,7 +152,8 @@ int main(int argc, const char** argv)
 		image.convertTo(image, CV_8UC3, 1.0f);
 		cv::imshow("image", image);
 		key = cv::waitKey(10);
-
+		//while (std::cin.get() != '\n')//清除缓冲区
+			//continue;
 		std::cout << "frame count: " << frame_count++ << '\n';
 
 		if (key == 'a') {
