@@ -7,38 +7,24 @@
 constexpr double MY_PI = 3.1415926;
 inline double DEG2RAD(double deg) { return deg * MY_PI / 180; }
 
-Eigen::Matrix4f get_model_matrix(float angle)
+Eigen::Matrix4f get_model_matrix(float rotation_angle)
 {
-	Eigen::Matrix4f rotation;
-	angle = angle * MY_PI / 180.f;
-	rotation << cos(angle), 0, sin(angle), 0,//绕Y旋转
-		0, 1, 0, 0,
-		-sin(angle), 0, cos(angle), 0,
+	Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+
+	// TODO: Implement this function
+	// Create the model matrix for rotating the triangle around the Z axis.
+	// Then return it.
+	Eigen::Matrix4f rotating;
+	float angle = rotation_angle / 180 * MY_PI;
+
+	rotating << std::cos(angle), -1 * std::sin(angle), 0, 0, \
+		std::sin(angle), std::cos(angle), 0, 0, \
+		0, 0, 1, 0, \
 		0, 0, 0, 1;
 
-	Eigen::Matrix4f scale;
-	//scale << 2.5, 0, 0, 0,
-	//	0, 2.5, 0, 0,
-	//	0, 0, 2.5, 0,
-	//	0, 0, 0, 1;
+	model = rotating * model;
 
-	scale << 0.5, 0, 0, 0,
-		0, 0.5, 0, 0,
-		0, 0, 0.5, 0,
-		0, 0, 0, 1;
-
-	Eigen::Matrix4f translate;
-	translate << 1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1;
-
-	//translate << 1, 0, 0, 2,
-	//	0, 1, 0, 2,
-	//	0, 0, 1, 2,
-	//	0, 0, 0, 1;
-
-	return translate * rotation * scale;
+	return model;
 }
 
 Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
@@ -92,6 +78,67 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
 
 	return projection;
 }
+
+//Improved:得到绕任意过原点的轴的旋转变换矩阵 https://www.freesion.com/article/28641062948/
+Eigen::Matrix4f get_rotation(Vector3f axis, float angle) {
+	Eigen::Matrix4f rotating = Eigen::Matrix4f::Identity();
+	float radian = angle / 180 * MY_PI;
+	float x = axis.x();
+	float y = axis.y();
+	float z = axis.z();
+	float cos_angle = std::cos(radian);
+	float sin_angle = std::sin(radian);
+
+	rotating << x * x + (1 - x * x)*cos_angle, x*y*(1 - cos_angle) + z * sin_angle, x*z*(1 - cos_angle) - y * sin_angle, 0, \
+		x*y*(1 - cos_angle) - z * sin_angle, y*y + (1 - y * y)*cos_angle, y*z*(1 - cos_angle) + sin_angle, 0, \
+		x*z*(1 - cos_angle) + y * sin_angle, y*z*(1 - cos_angle) - x * sin_angle, z*z + (1 - z * z)*cos_angle, 0, \
+		0, 0, 0, 1;
+
+	return rotating;
+}
+
+//Improved2:得到绕任意过原点的轴的旋转变换矩阵 https://blog.csdn.net/qq_36242312/article/details/105742949
+Eigen::Matrix4f get_model_matrix_axis(float rotation_angle, Eigen::Vector3f axis_start, Eigen::Vector3f axis_end)
+{
+	// Eigen::Vector3f axis_start 为起点
+	// Eigen::Vector3f axis_end 为终点
+	Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+	// normalize axis
+	Eigen::Vector3f axis;
+	axis[0] = axis_end[0] - axis_start[0];
+	axis[1] = axis_end[1] - axis_start[1];
+	axis[2] = axis_end[2] - axis_start[2];
+	float norm = sqrt(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
+	axis[0] /= norm;
+	axis[1] /= norm;
+	axis[2] /= norm;
+	// compute radian
+	float radian = rotation_angle / 180.0 * MY_PI;
+	// compute component 计算轴角旋转矩阵分量
+	Eigen::Matrix3f n(3, 3);
+	n << 0, -axis[2], axis[1],
+		axis[2], 0, -axis[0],
+		-axis[1], axis[0], 0;
+
+	Eigen::Matrix3f component1 = Eigen::Matrix3f::Identity() * cos(radian);
+	Eigen::Matrix3f component2 = axis * axis.transpose() * (1 - cos(radian));
+	Eigen::Matrix3f component3 = n * sin(radian);
+
+	Eigen::Matrix3f rotate_m = component1 + component2 + component3;
+
+	// Eigen 自带构造轴角旋转矩阵
+	// 下列注释用于验证我们构造的轴角旋转矩阵是否和Eigen的构造的轴角旋转矩阵一致
+	//Eigen::AngleAxisf rotation_vector(radian, Vector3f(axis[0], axis[1], axis[2]));  
+	//Eigen::Matrix3f rotation_matrix;
+	//rotation_m = rotation_vector.toRotationMatrix();
+
+	Eigen::Matrix4f rotate_martix = Eigen::Matrix4f::Identity();
+	rotate_martix.block(0, 0, 3, 3) = rotate_m; // 前三个维度为旋转矩阵
+
+	model = rotate_martix * model;
+	return model;
+}
+
 
 int main(int argc, const char** argv)
 {
