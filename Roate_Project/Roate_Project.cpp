@@ -189,10 +189,10 @@ int main(int argc, const char** argv)
 	while (key != 27) {
 		r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 		Vector3f Vs = { 1,1,1 },
-			Ve = { 3,3,3 };		
+			Ve = { 1,3,1 };		//Try example: {1,1,3} {3,1,1} {1,3,1} {3,3,3}
 		//r.set_model(get_model_matrix(angle));//angle在变，键盘A+D控制的是angle
-		r.set_model(get_rotation({1,1,1}, angle));//improve
-
+		//r.set_model(get_rotation(Vs, angle));//improve
+		r.set_model(get_model_matrix_axis(angle,Vs,Ve));//improve2
 		r.set_view(get_view_matrix(eye_pos));//eye_pos不变
 		r.set_projection(get_projection_matrix(45, 1, 0.1, 50));//projection参数不变
 
