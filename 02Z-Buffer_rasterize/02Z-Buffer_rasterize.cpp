@@ -6,7 +6,7 @@
 #include "Triangle.hpp"
 
 constexpr double MY_PI = 3.1415926;
-
+inline double DEG2RAD(double deg) { return deg * MY_PI / 180; }
 Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
 {
 	Eigen::Matrix4f view = Eigen::Matrix4f::Identity();
@@ -32,6 +32,13 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
 {
 	// TODO: Copy-paste your implementation from the previous assignment.
 	Eigen::Matrix4f projection;
+	float top = -tan(DEG2RAD(eye_fov / 2.0f) * abs(zNear));
+	float right = top * aspect_ratio;
+
+	projection << zNear / right, 0, 0, 0,
+		0, zNear / top, 0, 0,
+		0, 0, (zNear + zFar) / (zNear - zFar), (2 * zNear*zFar) / (zFar - zNear),
+		0, 0, 1, 0;
 
 	return projection;
 }
