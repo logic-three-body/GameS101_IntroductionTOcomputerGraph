@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.28307.1209
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestEgein-Opencv", "TestEgein-Opencv\TestEgein-Opencv.vcxproj", "{70116D09-C804-4D1E-9F6B-2A7B5E00E389}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Roate_Project", "Roate_Project\Roate_Project.vcxproj", "{BAD8C01F-3F4F-4FAE-B6F5-82C0DC870B16}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01Roate_Project", "Roate_Project\Roate_Project.vcxproj", "{BAD8C01F-3F4F-4FAE-B6F5-82C0DC870B16}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "00_Eigen", "00_Eigen\00_Eigen.vcxproj", "{D0B89A58-336B-430C-A3A9-0E85022EA802}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02Z-Buffer_rasterize", "02Z-Buffer_rasterize\02Z-Buffer_rasterize.vcxproj", "{DFFF9275-A065-4E19-9C43-8F58E5B808C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{D0B89A58-336B-430C-A3A9-0E85022EA802}.Release|x64.Build.0 = Release|x64
 		{D0B89A58-336B-430C-A3A9-0E85022EA802}.Release|x86.ActiveCfg = Release|Win32
 		{D0B89A58-336B-430C-A3A9-0E85022EA802}.Release|x86.Build.0 = Release|Win32
+		{DFFF9275-A065-4E19-9C43-8F58E5B808C4}.Debug|x64.ActiveCfg = Debug|x64
+		{DFFF9275-A065-4E19-9C43-8F58E5B808C4}.Debug|x64.Build.0 = Debug|x64
+		{DFFF9275-A065-4E19-9C43-8F58E5B808C4}.Debug|x86.ActiveCfg = Debug|Win32
+		{DFFF9275-A065-4E19-9C43-8F58E5B808C4}.Debug|x86.Build.0 = Debug|Win32
+		{DFFF9275-A065-4E19-9C43-8F58E5B808C4}.Release|x64.ActiveCfg = Release|x64
+		{DFFF9275-A065-4E19-9C43-8F58E5B808C4}.Release|x64.Build.0 = Release|x64
+		{DFFF9275-A065-4E19-9C43-8F58E5B808C4}.Release|x86.ActiveCfg = Release|Win32
+		{DFFF9275-A065-4E19-9C43-8F58E5B808C4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
