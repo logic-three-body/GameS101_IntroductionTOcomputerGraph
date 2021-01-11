@@ -30,14 +30,16 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 
 Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float zFar)
 {
-	// TODO: Copy-paste your implementation from the previous assignment.
-	Eigen::Matrix4f projection;
-	float top = -tan(DEG2RAD(eye_fov / 2.0f) * abs(zNear));
-	float right = top * aspect_ratio;
-
-	projection << zNear / right, 0, 0, 0,
-		0, zNear / top, 0, 0,
-		0, 0, (zNear + zFar) / (zNear - zFar), (2 * zNear*zFar) / (zFar - zNear),
+	// TODO: Use the same projection matrix from the previous assignments
+	Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
+	float n = zNear, f = zFar;
+	float t = -n * tan(eye_fov / 2.0);//Use -n because the left-hand coordinate used in the framework 
+	// float t=fabs(n)*tan(eye_fov/2.0); //即为倒置三角形
+	float r = t * aspect_ratio;
+	float b = -t, l = -r;
+	projection << (2.0*n) / (r - l), 0, (r + l) / (l - r), 0,
+		0, (2.0*n) / (t - b), (t + b) / (b - t), 0,
+		0, 0, (n + f) / (n - f), (2.0*n*f) / (f - n),
 		0, 0, 1, 0;
 
 	return projection;
