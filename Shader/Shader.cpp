@@ -355,6 +355,8 @@ int main(int argc, const char** argv)
 	bool command_line = false;
 
 	std::string filename = "output.png";
+	std::cout << "输入输出文件名\n";
+	std::cin >> filename;
 	objl::Loader Loader;
 	std::cout << "输入贴图路径\n";
 	std::string path_name;
@@ -384,12 +386,12 @@ int main(int argc, const char** argv)
 	rst::rasterizer r(700, 700);
 
 	std::string texture_path = "hmap.jpg";
-	std::cout << "输入纹理名\n";
-	std::cin >> texture_path;
-	if (texture_path!="None")
-	{
-		r.set_texture(Texture(obj_path + texture_path));
-	}
+	//std::cout << "输入纹理名\n";
+	//std::cin >> texture_path;
+	//if (texture_path!="None")
+	//{
+	//	r.set_texture(Texture(obj_path + texture_path));
+	//}
 	std::function<Eigen::Vector3f(fragment_shader_payload)> active_shader = phong_fragment_shader;
 
 	if (argc >= 2)
@@ -402,9 +404,9 @@ int main(int argc, const char** argv)
 			std::cout << "Rasterizing using the texture shader\n";
 			active_shader = texture_fragment_shader;
 			//texture_path = "spot_texture.png";
-			//std::cout << "输入纹理名\n";
-			//std::cin >> texture_path;
-			//r.set_texture(Texture(obj_path + texture_path));
+			std::cout << "输入纹理名\n";
+			std::cin >> texture_path;
+			r.set_texture(Texture(obj_path + texture_path));
 		}
 		else if (argc == 3 && std::string(argv[2]) == "normal")
 		{
