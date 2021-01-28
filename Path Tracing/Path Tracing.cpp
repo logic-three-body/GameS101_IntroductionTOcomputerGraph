@@ -52,5 +52,6 @@ int main(int argc, char** argv)
 	std::cout << "          : " << std::chrono::duration_cast<std::chrono::minutes>(stop - start).count() << " minutes\n";
 	std::cout << "          : " << std::chrono::duration_cast<std::chrono::seconds>(stop - start).count() << " seconds\n";
 
+	system("pause");
 	return 0;
 }
