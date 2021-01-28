@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     scene.buildBVH();
 
     Renderer r;
-    int spp = 50;
+    int spp = 200;
     if (argc > 1)
     {
         spp = std::atoi(argv[1]);
@@ -58,5 +58,6 @@ int main(int argc, char** argv)
     std::cout << "          : " << std::chrono::duration_cast<std::chrono::minutes>(stop - start).count() << " minutes\n";
     std::cout << "          : " << std::chrono::duration_cast<std::chrono::seconds>(stop - start).count() << " seconds\n";
 
+	system("pause");
     return 0;
 }
