@@ -34,10 +34,10 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 		0, 0, 0, 1;
 
 	//scale with k
-	float k = .25;//scale factor
-	scaleK << k * 4, 0, 0, 0, \
+	float k = .01;//scale factor
+	scaleK << k , 0, 0, 0, \
 		0, k, 0, 0, \
-		0, 0, k * 2, 0, \
+		0, 0, k , 0, \
 		0, 0, 0, 1;
 
 	//translate X OR Z for any step
@@ -51,13 +51,15 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 		0, 1, 0, 0, \
 		0, 0, 1, step, \
 		0, 0, 0, 1;
-	model = rotateZ * model;
+	//model = rotateZ * model;
 	//model = rotateX * model;
 	//model = rotateY * model;
 	//model = scaleK * model;
 	//model *= translateX;
 	//model *= translateZ;
 	//model *= translateX*rotateX*scaleK;
+	//model *= rotateZ * scaleK;
+	model *= rotateY * scaleK;
 	return model;
 }
 
@@ -108,8 +110,11 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
 		0, 0, 0, 1;
 
 	Eigen::Matrix4f M_ortho = M_ortho_scale * M_ortho_trans;
-	projection = M_ortho * M_persp2ortho * projection;
+	//prespective
+	//projection = M_ortho * M_persp2ortho * projection;
 
+	//orthogonal
+	projection *= M_ortho;
 	return projection;
 }
 
@@ -222,7 +227,7 @@ int main(int argc, const char** argv)
 		//r.set_model(get_rotation(Vs, angle));//improve
 		r.set_model(get_model_matrix(angle));//improve2
 		r.set_view(get_view_matrix(eye_pos));//eye_pos不变
-		r.set_projection(get_projection_matrix(45, 1, 0.1, 50));//projection参数不变
+		r.set_projection(get_projection_matrix(45, 1, 0.1, 500));//projection参数不变
 
 		r.draw(pos_id, ind_id, rst::Primitive::Triangle);
 
@@ -238,14 +243,13 @@ int main(int argc, const char** argv)
 		if (key == 'a') {
 			angle += RotateAngle;
 			image.convertTo(image, CV_8UC3, 1.0f);
-			cv::imwrite(path, image);
+		//	cv::imwrite(path, image);
 		}
 		else if (key == 'd') {
 			angle -= RotateAngle;
 			image.convertTo(image, CV_8UC3, 1.0f);
-			cv::imwrite(path, image);
+		//	cv::imwrite(path, image);
 		}
-		//cv::imwrite(/*"img/RotateZ/" +*/ filename, image);
 	}
 	return 0;
 }
