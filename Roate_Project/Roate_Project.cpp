@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 
 constexpr double MY_PI = 3.1415926;
+constexpr float RotateAngle = 45;
 inline double DEG2RAD(double deg) { return deg * MY_PI / 180; }
 
 Eigen::Matrix4f get_model_matrix(float rotation_angle)
@@ -14,16 +15,26 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 	// TODO: Implement this function
 	// Create the model matrix for rotating the triangle around the Z axis.
 	// Then return it.
-	Eigen::Matrix4f rotating;
+	Eigen::Matrix4f rotateZ, rotateY, rotateX;
 	float angle = rotation_angle / 180 * MY_PI;
-
-	rotating << std::cos(angle), -1 * std::sin(angle), 0, 0, \
+	//rotate with z
+	rotateZ << std::cos(angle), -1 * std::sin(angle), 0, 0, \
 		std::sin(angle), std::cos(angle), 0, 0, \
 		0, 0, 1, 0, \
 		0, 0, 0, 1;
-
-	model = rotating * model;
-
+	//rotate with x
+	rotateX << 1, 0, 0, 0, \
+		0, std::cos(angle), -std::sin(angle), 0, \
+		0, std::sin(angle), std::cos(angle), 0, \
+		0, 0, 0, 1;
+	//rotate with y
+	rotateY << std::cos(angle), 0, std::sin(angle), 0, \
+		0, 1, 0, 0, \
+		- std::sin(angle), 0, std::cos(angle), 0, \
+		0, 0, 0, 1;
+	//model = rotateZ * model;
+	//model = rotateX * model;
+	model = rotateY * model;
 	return model;
 }
 
@@ -32,7 +43,7 @@ Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
 	Eigen::Matrix4f view = Eigen::Matrix4f::Identity();
 
 	Eigen::Matrix4f translate;
-	translate << 1, 0, 0, -eye_pos[0],
+	translate << 1, 0, 0, -eye_pos[0],//将相机移至世界原点
 		0, 1, 0, -eye_pos[1],
 		0, 0, 1, -eye_pos[2],
 		0, 0, 0, 1;
@@ -80,7 +91,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
 }
 
 //Improved:得到绕任意过原点的轴的旋转变换矩阵 https://www.freesion.com/article/28641062948/
-Eigen::Matrix4f get_rotation(Vector3f axis, float angle) {
+Eigen::Matrix4f get_model_matrix(Vector3f axis, float angle) {
 	Eigen::Matrix4f rotating = Eigen::Matrix4f::Identity();
 	float radian = angle / 180 * MY_PI;
 	float x = axis.x();
@@ -98,7 +109,7 @@ Eigen::Matrix4f get_rotation(Vector3f axis, float angle) {
 }
 
 //Improved2:得到绕任意过原点的轴的旋转变换矩阵 https://blog.csdn.net/qq_36242312/article/details/105742949
-Eigen::Matrix4f get_model_matrix_axis(float rotation_angle, Eigen::Vector3f axis_start, Eigen::Vector3f axis_end)
+Eigen::Matrix4f get_model_matrix(float rotation_angle, Eigen::Vector3f axis_start, Eigen::Vector3f axis_end)
 {
 	// Eigen::Vector3f axis_start 为起点
 	// Eigen::Vector3f axis_end 为终点
@@ -160,7 +171,7 @@ int main(int argc, const char** argv)
 
 	Eigen::Vector3f eye_pos = { 0, 0, 5 };
 
-	std::vector<Eigen::Vector3f> pos{ {2, 0, -2}, {0, 2, -2}, {-2, 0, -2} };
+	std::vector<Eigen::Vector3f> pos{ {2, 0, -2}, {0, 2, -2}, {-2, 0, -2} };//给定点，操作此三点
 
 	std::vector<Eigen::Vector3i> ind{ {0, 1, 2} };
 
@@ -192,7 +203,7 @@ int main(int argc, const char** argv)
 			Ve = { 1,3,1 };		//Try example: {1,1,3} {3,1,1} {1,3,1} {3,3,3}
 		//r.set_model(get_model_matrix(angle));//angle在变，键盘A+D控制的是angle
 		//r.set_model(get_rotation(Vs, angle));//improve
-		r.set_model(get_model_matrix_axis(angle,Vs,Ve));//improve2
+		r.set_model(get_model_matrix(angle));//improve2
 		r.set_view(get_view_matrix(eye_pos));//eye_pos不变
 		r.set_projection(get_projection_matrix(45, 1, 0.1, 50));//projection参数不变
 
@@ -207,10 +218,10 @@ int main(int argc, const char** argv)
 		std::cout << "frame count: " << frame_count++ << '\n';
 
 		if (key == 'a') {
-			angle += 10;
+			angle += RotateAngle;
 		}
 		else if (key == 'd') {
-			angle -= 10;
+			angle -= RotateAngle;
 		}
 	}
 
