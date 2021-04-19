@@ -53,13 +53,13 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 		0, 0, 0, 1;
 	//model = rotateZ * model;
 	//model = rotateX * model;
-	//model = rotateY * model;
+	model = rotateY * model;
 	//model = scaleK * model;
 	//model *= translateX;
 	//model *= translateZ;
 	//model *= translateX*rotateX*scaleK;
 	//model *= rotateZ * scaleK;
-	model *= rotateY * scaleK;
+	//model *= rotateY * scaleK;
 	return model;
 }
 
@@ -111,10 +111,11 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
 
 	Eigen::Matrix4f M_ortho = M_ortho_scale * M_ortho_trans;
 	//prespective
-	//projection = M_ortho * M_persp2ortho * projection;
+	projection = M_ortho * M_persp2ortho * projection;
 
 	//orthogonal
-	projection *= M_ortho;
+	//projection *= M_ortho;
+
 	return projection;
 }
 
@@ -239,16 +240,19 @@ int main(int argc, const char** argv)
 			//continue;
 		std::cout << "frame count: " << frame_count++ << '\n';
 		std::string num = std::to_string(frame_count);
-		std::string path = "img/RotateZ/" + num + filename;
+		std::string pathPZ = "img/Perspective/RotateZ/" + num + filename;
+		std::string pathOY = "img/Orthogonal/RotateY/" + num + filename;
+		std::string pathPY = "img/Perspective/RotateY/" + num + filename;
+
 		if (key == 'a') {
 			angle += RotateAngle;
 			image.convertTo(image, CV_8UC3, 1.0f);
-		//	cv::imwrite(path, image);
+			//cv::imwrite(path3, image);
 		}
 		else if (key == 'd') {
 			angle -= RotateAngle;
 			image.convertTo(image, CV_8UC3, 1.0f);
-		//	cv::imwrite(path, image);
+			//cv::imwrite(path3, image);
 		}
 	}
 	return 0;
