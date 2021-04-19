@@ -15,7 +15,7 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 	// TODO: Implement this function
 	// Create the model matrix for rotating the triangle around the Z axis.
 	// Then return it.
-	Eigen::Matrix4f rotateZ, rotateY, rotateX,scaleK,translateX,translateZ;
+	Eigen::Matrix4f rotateZ, rotateY, rotateX, scaleK, translateX, translateZ;
 	float angle = rotation_angle / 180 * MY_PI;
 	//rotate with z
 	rotateZ << std::cos(angle), -1 * std::sin(angle), 0, 0, \
@@ -115,7 +115,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
 
 //Improved:得到绕任意过原点的轴的旋转变换矩阵 https://www.freesion.com/article/28641062948/
 Eigen::Matrix4f get_model_matrix(Vector3f axis, float angle) {
-	Eigen::Matrix4f rotating = Eigen::Matrix4f::Identity();
+	Eigen::Matrix4f RotateAxis = Eigen::Matrix4f::Identity();
 	float radian = angle / 180 * MY_PI;
 	float x = axis.x();
 	float y = axis.y();
@@ -123,12 +123,12 @@ Eigen::Matrix4f get_model_matrix(Vector3f axis, float angle) {
 	float cos_angle = std::cos(radian);
 	float sin_angle = std::sin(radian);
 
-	rotating << x * x + (1 - x * x)*cos_angle, x*y*(1 - cos_angle) + z * sin_angle, x*z*(1 - cos_angle) - y * sin_angle, 0, \
+	RotateAxis << x * x + (1 - x * x)*cos_angle, x*y*(1 - cos_angle) + z * sin_angle, x*z*(1 - cos_angle) - y * sin_angle, 0, \
 		x*y*(1 - cos_angle) - z * sin_angle, y*y + (1 - y * y)*cos_angle, y*z*(1 - cos_angle) + sin_angle, 0, \
 		x*z*(1 - cos_angle) + y * sin_angle, y*z*(1 - cos_angle) - x * sin_angle, z*z + (1 - z * z)*cos_angle, 0, \
 		0, 0, 0, 1;
 
-	return rotating;
+	return RotateAxis;
 }
 
 //Improved2:得到绕任意过原点的轴的旋转变换矩阵 https://blog.csdn.net/qq_36242312/article/details/105742949
@@ -136,7 +136,7 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle, Eigen::Vector3f axis_star
 {
 	// Eigen::Vector3f axis_start 为起点
 	// Eigen::Vector3f axis_end 为终点
-	Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+	Eigen::Matrix4f RotateAxis = Eigen::Matrix4f::Identity();
 	// normalize axis
 	Eigen::Vector3f axis;
 	axis[0] = axis_end[0] - axis_start[0];
@@ -160,17 +160,11 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle, Eigen::Vector3f axis_star
 
 	Eigen::Matrix3f rotate_m = component1 + component2 + component3;
 
-	// Eigen 自带构造轴角旋转矩阵
-	// 下列注释用于验证我们构造的轴角旋转矩阵是否和Eigen的构造的轴角旋转矩阵一致
-	//Eigen::AngleAxisf rotation_vector(radian, Vector3f(axis[0], axis[1], axis[2]));  
-	//Eigen::Matrix3f rotation_matrix;
-	//rotation_m = rotation_vector.toRotationMatrix();
-
 	Eigen::Matrix4f rotate_martix = Eigen::Matrix4f::Identity();
 	rotate_martix.block(0, 0, 3, 3) = rotate_m; // 前三个维度为旋转矩阵
 
-	model = rotate_martix * model;
-	return model;
+	RotateAxis = rotate_martix * RotateAxis;
+	return RotateAxis;
 }
 
 
@@ -189,7 +183,7 @@ int main(int argc, const char** argv)
 		else
 			return 0;
 	}
-	
+
 	rst::rasterizer r(700, 700);
 
 	Eigen::Vector3f eye_pos = { 0, 0, 5 };
@@ -239,14 +233,19 @@ int main(int argc, const char** argv)
 		//while (std::cin.get() != '\n')//清除缓冲区
 			//continue;
 		std::cout << "frame count: " << frame_count++ << '\n';
-
+		std::string num = std::to_string(frame_count);
+		std::string path = "img/RotateZ/" + num + filename;
 		if (key == 'a') {
 			angle += RotateAngle;
+			image.convertTo(image, CV_8UC3, 1.0f);
+			cv::imwrite(path, image);
 		}
 		else if (key == 'd') {
 			angle -= RotateAngle;
+			image.convertTo(image, CV_8UC3, 1.0f);
+			cv::imwrite(path, image);
 		}
+		//cv::imwrite(/*"img/RotateZ/" +*/ filename, image);
 	}
-
 	return 0;
 }
