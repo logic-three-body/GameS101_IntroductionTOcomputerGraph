@@ -15,7 +15,7 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 	// TODO: Implement this function
 	// Create the model matrix for rotating the triangle around the Z axis.
 	// Then return it.
-	Eigen::Matrix4f rotateZ, rotateY, rotateX;
+	Eigen::Matrix4f rotateZ, rotateY, rotateX,scaleK;
 	float angle = rotation_angle / 180 * MY_PI;
 	//rotate with z
 	rotateZ << std::cos(angle), -1 * std::sin(angle), 0, 0, \
@@ -32,9 +32,17 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 		0, 1, 0, 0, \
 		- std::sin(angle), 0, std::cos(angle), 0, \
 		0, 0, 0, 1;
+
+	//scale with k
+	float k = .25;//缩放因子
+	scaleK<< k*4,0,0,0,\
+		0, k,0,0,\
+		0,0, k*2,0,\
+		0,0,0,1;
 	//model = rotateZ * model;
 	//model = rotateX * model;
-	model = rotateY * model;
+	//model = rotateY * model;
+	model = scaleK * model;
 	return model;
 }
 
