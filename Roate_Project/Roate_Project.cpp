@@ -15,7 +15,7 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 	// TODO: Implement this function
 	// Create the model matrix for rotating the triangle around the Z axis.
 	// Then return it.
-	Eigen::Matrix4f rotateZ, rotateY, rotateX,scaleK;
+	Eigen::Matrix4f rotateZ, rotateY, rotateX,scaleK,translateX,translateZ;
 	float angle = rotation_angle / 180 * MY_PI;
 	//rotate with z
 	rotateZ << std::cos(angle), -1 * std::sin(angle), 0, 0, \
@@ -34,15 +34,29 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 		0, 0, 0, 1;
 
 	//scale with k
-	float k = .25;//缩放因子
-	scaleK<< k*4,0,0,0,\
-		0, k,0,0,\
-		0,0, k*2,0,\
-		0,0,0,1;
+	float k = .25;//scale factor
+	scaleK << k * 4, 0, 0, 0, \
+		0, k, 0, 0, \
+		0, 0, k * 2, 0, \
+		0, 0, 0, 1;
+
+	//translate X OR Z for any step
+	float step = -angle / 10.0;
+	translateX << 1, 0, 0, step, \
+		0, 1, 0, 0, \
+		0, 0, 1, 0, \
+		0, 0, 0, 1;
+
+	translateZ << 1, 0, 0, 0, \
+		0, 1, 0, 0, \
+		0, 0, 1, step, \
+		0, 0, 0, 1;
 	//model = rotateZ * model;
-	//model = rotateX * model;
+	model = rotateX * model;
 	//model = rotateY * model;
-	model = scaleK * model;
+	//model = scaleK * model;
+	//model *= translateX;
+	//model *= translateZ;
 	return model;
 }
 
@@ -50,13 +64,13 @@ Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
 {
 	Eigen::Matrix4f view = Eigen::Matrix4f::Identity();
 
-	Eigen::Matrix4f translate;
-	translate << 1, 0, 0, -eye_pos[0],//将相机移至世界原点
+	Eigen::Matrix4f translate2orgin;
+	translate2orgin << 1, 0, 0, -eye_pos[0],//move camera to world orgin
 		0, 1, 0, -eye_pos[1],
 		0, 0, 1, -eye_pos[2],
 		0, 0, 0, 1;
 
-	view = translate * view;
+	view = translate2orgin * view;
 
 	return view;
 }
