@@ -5,8 +5,9 @@ const TGAColor green = TGAColor(0, 255, 0, 255);
 int main()
 {
 	TGAImage image(100, 100, TGAImage::RGB);
-	image.set(0, 0, white);//为设置坐标，此处为白点为原点
-	//image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
-	image.write_tga_file("output2.tga");
+	image.read_tga_file("obj/african_head/african_head_diffuse.tga");
+	//image.set(0, 0, white);//为设置坐标，此处为白点为原点
+	image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
+	image.write_tga_file("output3.tga");
 	return 0;
 }
