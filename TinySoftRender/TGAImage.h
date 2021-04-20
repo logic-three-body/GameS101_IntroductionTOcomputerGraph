@@ -4,6 +4,8 @@
 #include<fstream>
 #include<vector>
 #include<algorithm>
+
+#pragma pack(push,1)
 struct TGA_Header {
 	std::uint8_t  idlength{};
 	std::uint8_t  colormaptype{};
@@ -18,6 +20,7 @@ struct TGA_Header {
 	std::uint8_t  bitsperpixel{};
 	std::uint8_t  imagedescriptor{};
 };
+#pragma pack(pop)
 
 struct TGAColor {
 	std::uint8_t bgra[4] = { 0,0,0,0 };
@@ -50,7 +53,7 @@ protected:
 	int height;
 	int bytespp;
 
-	bool   load_rle_data(std::ifstream &in);
+	bool load_rle_data(std::ifstream &in);
 	bool unload_rle_data(std::ofstream &out) const;
 public:
 	enum Format { GRAYSCALE = 1, RGB = 3, RGBA = 4 };
