@@ -16,7 +16,7 @@ int main()
 	作者垂直反转图片是为了方便读者的固有习惯，即原点在左下角
 	*/
 	image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
-	image.write_tga_file("Lesson1Line/line.tga");
+	image.write_tga_file("Lesson1Line/BigStepline.tga");
 	return 0;
 }
 
@@ -28,7 +28,7 @@ int main()
 void line(int x0, int y0, int x1, int y1, TGAImage&img, const TGAColor&color)
 {
 	float length = 1.0f;
-	for (float dt = 0.0f; dt < length; dt += 0.01f)
+	for (float dt = 0.0f; dt < length; dt += 0.1f)
 	{
 		int x = x0 + (x1 - x0)*dt;
 		int y = y0 + (y1 - y0)*dt;
