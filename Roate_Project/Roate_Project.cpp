@@ -51,9 +51,9 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 		0, 1, 0, 0, \
 		0, 0, 1, step, \
 		0, 0, 0, 1;
-	//model = rotateZ * model;
+	model = rotateZ * model;
 	//model = rotateX * model;
-	model = rotateY * model;
+	//model = rotateY * model;
 	//model = scaleK * model;
 	//model *= translateX;
 	//model *= translateZ;
