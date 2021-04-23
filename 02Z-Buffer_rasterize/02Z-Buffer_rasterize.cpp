@@ -78,7 +78,7 @@ int main(int argc, const char** argv)
 			{3, 4, 5}
 	};
 
-	std::vector<Eigen::Vector3f> cols
+	std::vector<Eigen::Vector3f> cols//颜色
 	{
 			{217.0, 238.0, 185.0},
 			{217.0, 238.0, 185.0},

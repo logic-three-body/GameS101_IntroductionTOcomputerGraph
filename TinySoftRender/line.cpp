@@ -16,12 +16,44 @@ void lineNaiveSegment(int x0, int y0, int x1, int y1, TGAImage&img, const TGACol
 	}
 }
 
-void lineInterpolateSegment(int x0, int y0, int x1, int y1, TGAImage & img, const TGAColor & color)
+//无法画出斜率为负的线
+void lineBresenhambad(int x0, int y0, int x1, int y1, TGAImage & img, const TGAColor & color)
 {
 	for (int x = x0; x <= x1; ++x)
 	{
 		float dt = float(x - x0) / float(x1-x0);
 		int y = y0 * (1.0f - dt) + y1 * dt;
 		img.set(x, y, color);
+	}
+}
+/*
+Bresenham算法：
+*/
+void lineBresenham(int x0, int y0, int x1, int y1, TGAImage & img, const TGAColor & color)
+{
+	bool steep = false;
+	if (std::abs(x0-x1)<std::abs(y0-y1))
+	{
+		std::swap(x0,x1);
+		std::swap(x1,y1);
+		steep = true;
+	}
+	if (x0>x1)//
+	{
+		std::swap(x0, x1);
+		std::swap(y0, y1);
+	}
+	for (int x = 0; x <= x1; x++)
+	{
+		float t = (x - x0) / float(x1 - x0);
+		int y = y0 * (1.0 - t) + y1 * t;
+		if (steep)
+		{
+			img.set(y, x, color);
+		}
+		else
+		{
+			img.set(x, y, color);
+		}
 	}
 }

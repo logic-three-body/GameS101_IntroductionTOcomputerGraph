@@ -10,12 +10,12 @@ int main()
 {
 	TGAImage image(100, 100, TGAImage::RGB);
 	//lineNaiveSegment(100, 100, 0, 0, image, white);//first
-	lineInterpolateSegment(13, 20, 80, 40, image, white);//Second
+	lineDDAbad(13, 20, 80, 40, image, white);//Second
 	image.write_tga_file("Lesson1Line/Second attempt/lineNaiveSegment1s.tga");
-	lineInterpolateSegment(20, 13, 40, 80, image, red);//Second
-	image.write_tga_file("Lesson1Line/Second attempt/lineNaiveSegment2.tga");
-	lineInterpolateSegment(80, 40, 13, 20, image, green);//Second
-	image.write_tga_file("Lesson1Line/Second attempt/lineNaiveSegment3.tga");
+	//lineDDAbad(20, 13, 40, 80, image, red);//Second
+	//image.write_tga_file("Lesson1Line/Second attempt/lineNaiveSegment2.tga");
+	lineDDAbad(80, 40, 13, 20, image, green);//Second
+	image.write_tga_file("Lesson1Line/Second attempt/lineNaiveSegment23.tga");
 
 	/*
 	flip_vertically的作用，如果学过数字图像处理bmp文件的读取，像素的原点（起始点）可能为左上角，

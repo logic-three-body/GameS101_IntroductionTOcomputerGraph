@@ -110,7 +110,7 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
     }
 }
 
-//Screen space rasterization
+
 //Screen space rasterization
 void rst::rasterizer::rasterize_triangle(const Triangle& t) {
 	auto v = t.toVector4();
