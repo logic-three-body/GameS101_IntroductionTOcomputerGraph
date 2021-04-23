@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 	//line(80, 40, 13, 20, image, green);
 	//image.write_tga_file("Lesson1Line/Third attempt/output6.tga");
 
-	image.write_tga_file("Lesson1Line/Wireframe/output2.tga");
+	image.write_tga_file("Lesson1Line/Wireframe/output4.tga");
 	delete model;
 	return 0;
 }
