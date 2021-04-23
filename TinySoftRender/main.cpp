@@ -31,8 +31,8 @@ int main(int argc, char** argv) {
 			int y0 = (v0.y + 1.)*height / 2.;
 			int x1 = (v1.x + 1.)*width / 2.;
 			int y1 = (v1.y + 1.)*height / 2.;
-			//line(x0, y0, x1, y1, image, white);
-			lineBresenham(x0, y0, x1, y1, image, white);
+			line(x0, y0, x1, y1, image, white);
+			//lineBresenham(x0, y0, x1, y1, image, white);
 		}
 	}
 	//lineBresenham(13, 20, 80, 40, image, white);
@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 	//line(80, 40, 13, 20, image, green);
 	//image.write_tga_file("Lesson1Line/Third attempt/output6.tga");
 
-	image.write_tga_file("Lesson1Line/Wireframe/output5.tga");
+	image.write_tga_file("Lesson1Line/Wireframe/output6.tga");
 	delete model;
 	return 0;
 }
