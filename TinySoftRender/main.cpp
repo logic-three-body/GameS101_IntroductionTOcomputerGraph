@@ -36,10 +36,11 @@ int main(int argc, char** argv) {
 	//	}
 	//}
 	lineBresenham(13, 20, 80, 40, image, white);
+	image.write_tga_file("Lesson1Line/Third attempt/output1.tga");
 	lineBresenham(20, 13, 40, 80, image, red);
+	image.write_tga_file("Lesson1Line/Third attempt/output2.tga");
 	line(80, 40, 13, 20, image, green);
-
-	image.write_tga_file("Lesson1Line/Third attempt/output.tga");
+	image.write_tga_file("Lesson1Line/Third attempt/output3.tga");
 	delete model;
 	return 0;
 }
