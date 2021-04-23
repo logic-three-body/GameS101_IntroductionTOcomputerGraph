@@ -45,7 +45,8 @@ void lineBresenham(int x0, int y0, int x1, int y1, TGAImage & img, const TGAColo
 	}
 	for (int x = 0; x <= x1; x++)
 	{
-		float t = (x - x0) / float(x1 - x0);
+		//float t = (x - x0) / float(x1 - x0);
+		float t = (x - x0) / (float)(x1 - x0);
 		int y = y0 * (1.0 - t) + y1 * t;
 		if (steep)
 		{
