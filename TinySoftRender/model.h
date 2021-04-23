@@ -28,6 +28,8 @@ public:
     TGAColor diffuse(Vec2f uv);
     float specular(Vec2f uv);
     std::vector<int> face(int idx);
+	void Update(const char *filename);
+	void clear();
 };
 #endif //__MODEL_H__
 
