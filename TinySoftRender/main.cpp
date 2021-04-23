@@ -1,28 +1,34 @@
 #include"TGAImage.h"
 #include"line.h"
 #include"global.h"
-
+#include"model.h"
+#include<cmath>
 
 
 
 
 int main()
 {
-	TGAImage image(100, 100, TGAImage::RGB);
-	//lineNaiveSegment(100, 100, 0, 0, image, white);//first
-	lineDDAbad(13, 20, 80, 40, image, white);//Second
-	image.write_tga_file("Lesson1Line/Second attempt/lineNaiveSegment1s.tga");
-	//lineDDAbad(20, 13, 40, 80, image, red);//Second
-	//image.write_tga_file("Lesson1Line/Second attempt/lineNaiveSegment2.tga");
-	lineDDAbad(80, 40, 13, 20, image, green);//Second
-	image.write_tga_file("Lesson1Line/Second attempt/lineNaiveSegment23.tga");
-
-	/*
-	flip_vertically的作用，如果学过数字图像处理bmp文件的读取，像素的原点（起始点）可能为左上角，
-	作者垂直反转图片是为了方便读者的固有习惯，即原点在左下角
-	*/
-	//image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
-	//image.write_tga_file("Lesson1Line/Final/lineNaiveSegment3points.tga");
+	Model *model = nullptr;
+	model = new Model("obj/african_head/african_head.obj");
+	TGAImage img(width, height, TGAImage::RGB);
+	for (int i = 0; i < model->nfaces(); i++)
+	{
+		std::vector<int> face = model->face(i);
+		for (int j = 0; j < 3; j++)
+		{
+			Vec3f v0 = model->vert(face[j]);
+			Vec3f v1 = model->vert(face[(j+1)%3]);
+			int x0 = (v0.x+1.0)*width/2.0;
+			int y0 = (v0.y + 1.0)*height / 2.0;
+			int x1 = (v1.x + 1.0)*width / 2.0;
+			int y1 = (v1.y + 1.0)*height / 2.0;
+			lineBresenham(x0,y0,x1,y1,img,white);
+		}
+	}
+	img.flip_vertically(); // i want to have the origin at the left bottom corner of the image
+	img.write_tga_file("Lesson1Line/Wireframe/output.tga");
+	delete model;
 	return 0;
 }
 

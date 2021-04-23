@@ -38,7 +38,7 @@ void lineBresenham(int x0, int y0, int x1, int y1, TGAImage & img, const TGAColo
 		std::swap(x1,y1);
 		steep = true;
 	}
-	if (x0>x1)//
+	if (x0>x1)
 	{
 		std::swap(x0, x1);
 		std::swap(y0, y1);
