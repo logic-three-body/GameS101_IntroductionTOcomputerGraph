@@ -21,7 +21,7 @@ void lineBresenhambad(int x0, int y0, int x1, int y1, TGAImage & img, const TGAC
 {
 	for (int x = x0; x <= x1; ++x)
 	{
-		float dt = float(x - x0) / float(x1-x0);
+		float dt = float(x - x0) / float(x1 - x0);
 		int y = y0 * (1.0f - dt) + y1 * dt;
 		img.set(x, y, color);
 	}
@@ -29,27 +29,31 @@ void lineBresenhambad(int x0, int y0, int x1, int y1, TGAImage & img, const TGAC
 /*
 BresenhamËã·¨£º
 */
-void lineBresenham(int x0, int y0, int x1, int y1, TGAImage & image, const TGAColor & color)
+void lineBresenham(int x0, int y0, int x1, int y1, TGAImage & img, const TGAColor & color)
 {
 	bool steep = false;
-	if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
-		std::swap(x0, y0);
+	if (std::abs(x0 - x1) < std::abs(y0 - y1))
+	{
+		std::swap(x0, x1);
 		std::swap(x1, y1);
 		steep = true;
 	}
-	if (x0 > x1) {
+	if (x0 > x1)
+	{
 		std::swap(x0, x1);
 		std::swap(y0, y1);
 	}
-
-	for (int x = x0; x <= x1; x++) {
+	for (int x = 0; x <= x1; x++)
+	{
 		float t = (x - x0) / (float)(x1 - x0);
 		int y = y0 * (1. - t) + y1 * t;
-		if (steep) {
-			image.set(y, x, color);
+		if (steep)
+		{
+			img.set(y, x, color);
 		}
-		else {
-			image.set(x, y, color);
+		else
+		{
+			img.set(x, y, color);
 		}
 	}
 }
