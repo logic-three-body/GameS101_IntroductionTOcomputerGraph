@@ -1,4 +1,5 @@
 ﻿#include "rasterizer.h"
+#include"compute.h"
 void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, const TGAColor & color)
 {
 	bool steep = false;
@@ -81,6 +82,43 @@ void rasterizer::DrawFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor &
 			frameBuffer.set(j, y, color); // attention, due to int casts t0.y+i != A.y 
 		}
 	}
+}
+
+void rasterizer::DrawInterpolateTrangile(Trianglei&t, const TGAColor&color)
+{
+	DrawInterpolateTrangile(t.p0, t.p1, t.p2, color);
+}
+
+void rasterizer::DrawInterpolateTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
+{
+	Vec2i* pts = new Vec2i[3];
+	pts[0] = p0;
+	pts[1] = p1;
+	pts[2] = p2;
+	Vec2i boundingbox_min(frameBuffer.get_width()-1,frameBuffer.get_height()-1);
+	Vec2i boundingbox_max(0,0);
+	Vec2i clamp(frameBuffer.get_width() - 1, frameBuffer.get_height() - 1);
+	for (size_t i = 0; i < 3; i++)//设置包围盒
+	{
+		for (size_t j = 0; j < 2; j++)
+		{
+			boundingbox_min[j] = std::max(0, std::min(boundingbox_min[j], pts[i][j]));
+			boundingbox_max[j] = std::min(clamp[j],std::max(boundingbox_max[j],pts[i][j]));
+		}
+	}
+	Vec2i P;
+	for (P.x = boundingbox_min.x; P.x <= boundingbox_max.x; P.x++)
+	{
+		for (P.y = 0; P.y <= boundingbox_max.y; P.y++)
+		{
+			Vec3f bc_screen = barycentric(pts, P);
+			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) 
+				continue;
+			frameBuffer.set(P.x,P.y,color);
+		}
+	}
+
+	delete[] pts;
 }
 
 void rasterizer::DrawWireFrame(Model & model, int width, int height, const TGAColor & color)
