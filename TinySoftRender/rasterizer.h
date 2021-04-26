@@ -23,6 +23,7 @@ public:
 	TGAImage GiveBuffer() { return frameBuffer; };
 	void WriteBuffer(const char* path) { frameBuffer.write_tga_file(path); };
 	void ReadBuffer(const char* path) { frameBuffer.read_tga_file(path); };
+	void ClearBuffer() { frameBuffer.clear(); };
 	//BresenhamªÊ÷∆œﬂ
 	void lineBresenham(int x0, int y0, int x1, int y1,const TGAColor&color);
 	void lineBresenham(Vec2i p0, Vec2i p1,const TGAColor&color);
