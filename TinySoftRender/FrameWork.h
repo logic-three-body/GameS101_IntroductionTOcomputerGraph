@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <cmath>
+#include<string>
 #include "tgaimage.h"//载入图片
 #include "model.h"//载入模型
 #include "geometry.h"//几何运算

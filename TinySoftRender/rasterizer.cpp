@@ -53,7 +53,21 @@ void rasterizer::DrawFillTrangile(Trianglei & t, TGAImage & img, const TGAColor 
 
 void rasterizer::DrawFillTrangile(Pointi p0, Pointi p1, Pointi p2, TGAImage & img, const TGAColor & color)
 {
-
+	if (p0.y>p1.y)
+	{
+		std::swap(p0, p1);
+	}
+	if (p0.y>p2.y)
+	{
+		std::swap(p0,p2);
+	}
+	if (p1.y>p2.y)
+	{
+		std::swap(p1,p2);
+	}
+	lineBresenham(p0, p1, img, color);
+	lineBresenham(p1, p2, img, color);
+	lineBresenham(p2, p0, img, color);
 }
 
 void rasterizer::DrawWireFrame(Model & model, int width, int height, TGAImage & img, const TGAColor & color)
