@@ -16,6 +16,7 @@ public:
 	void lineBresenham(int x0, int y0, int x1, int y1, TGAImage&img, const TGAColor&color);
 	void lineBresenham(Pointi p0,Pointi p1, TGAImage&img, const TGAColor&color);
 	void DrawTrangile(Trianglei&t, TGAImage&img, const TGAColor&color);
+	void DrawTrangile(Pointi p0, Pointi p1, Pointi p2, TGAImage&img, const TGAColor&color);
 	void DrawWireFrame(Model & model,int width,int height, TGAImage&img, const TGAColor&color);
 	void DrawWireFrame(Model & model,TGAImage&img,const TGAColor&color);
 };

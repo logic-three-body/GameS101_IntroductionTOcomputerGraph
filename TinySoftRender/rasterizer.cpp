@@ -36,9 +36,14 @@ void rasterizer::lineBresenham(Pointi p0, Pointi p1, TGAImage&img, const TGAColo
 
 void rasterizer::DrawTrangile(Trianglei & t, TGAImage&img, const TGAColor&color)
 {
-	lineBresenham(t.p1,t.p2,img,color);
-	lineBresenham(t.p2,t.p3,img,color);
-	lineBresenham(t.p3,t.p1,img,color);
+	DrawTrangile(t.p0,t.p1,t.p2,img,color);
+}
+
+void rasterizer::DrawTrangile(Pointi p0, Pointi p1, Pointi p2, TGAImage & img, const TGAColor & color)
+{
+	lineBresenham(p0, p1, img, color);
+	lineBresenham(p1, p2, img, color);
+	lineBresenham(p2, p0, img, color);
 }
 
 void rasterizer::DrawWireFrame(Model & model, int width, int height, TGAImage & img, const TGAColor & color)
