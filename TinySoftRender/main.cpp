@@ -45,6 +45,10 @@ void FilltriangleUpper(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &image, TGAColor c
 		Vec2i B = t0 + (t1 - t0)*beta;
 		image.set(A.x, y, red);
 		image.set(B.x, y, green);
+		if (A.x > B.x) std::swap(A, B);//水平扫描
+		for (int j = A.x; j <= B.x; j++) {
+			image.set(j, y, color); // attention, due to int casts t0.y+i != A.y 
+		}
 	}
 }
 
@@ -61,7 +65,7 @@ void FilltriangleLower(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &image, TGAColor c
 		float beta = (float)(y - t1.y) / segment_height; // be careful with divisions by zero 
 		Vec2i A = t0 + (t2 - t0)*alpha;
 		Vec2i B = t1 + (t2 - t1)*beta;
-		if (A.x > B.x) std::swap(A, B);
+		if (A.x > B.x) std::swap(A, B);//水平扫描
 		for (int j = A.x; j <= B.x; j++) {
 			image.set(j, y, color); // attention, due to int casts t0.y+i != A.y 
 		}
@@ -69,8 +73,8 @@ void FilltriangleLower(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &image, TGAColor c
 }
 int main(int argc, char** argv) {
 	//rasterizer r(width,height);
-	auto path1 = "Lesson2rasterizer/Trangile/outputUpper1.tga";
-	auto path2 = "Lesson2rasterizer/Trangile/outputLower3.tga";
+	auto path1 = "Lesson2rasterizer/Trangile/outputUpper6.tga";
+	auto path2 = "Lesson2rasterizer/Trangile/outputLower6.tga";
 	Vec2i t0[3] = { Vec2i(10, 70),   Vec2i(50, 160),  Vec2i(70, 80) };
 	Vec2i t1[3] = { Vec2i(180, 50),  Vec2i(150, 1),   Vec2i(70, 180) };
 	Vec2i t2[3] = { Vec2i(180, 150), Vec2i(120, 160), Vec2i(130, 180) };
