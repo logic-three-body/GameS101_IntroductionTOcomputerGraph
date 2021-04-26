@@ -8,7 +8,7 @@ private:
 	int height;//光栅化器长
 public:
 	//构造函数
-	rasterizer() {};
+	rasterizer():width(0),height(0) {};
 	rasterizer(int _width, int _height):width(_width),height(_height) {};
 	//功能函数
 	void Resize(int _width, int _height) { width = _width; height = _height; };//重定义光栅化器大小
@@ -17,6 +17,7 @@ public:
 	void lineBresenham(Pointi p0,Pointi p1, TGAImage&img, const TGAColor&color);
 	void DrawWireTrangile(Trianglei&t, TGAImage&img, const TGAColor&color);
 	void DrawWireTrangile(Pointi p0, Pointi p1, Pointi p2, TGAImage&img, const TGAColor&color);
+	void DrawFillTrangile(Trianglei&t, TGAImage&img, const TGAColor&color);
 	void DrawFillTrangile(Pointi p0, Pointi p1, Pointi p2, TGAImage&img, const TGAColor&color);
 	void DrawWireFrame(Model & model,int width,int height, TGAImage&img, const TGAColor&color);
 	void DrawWireFrame(Model & model,TGAImage&img,const TGAColor&color);
