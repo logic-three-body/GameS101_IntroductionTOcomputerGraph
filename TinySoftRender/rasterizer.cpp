@@ -141,3 +141,21 @@ void rasterizer::DrawWireFrame(Model & model, const TGAColor & color)
 {
 	DrawWireFrame(model, width, height,color);
 }
+
+void rasterizer::DrawFlatFrame(Model & model)
+{
+	DrawFlatFrame(model, width, height);
+}
+
+void rasterizer::DrawFlatFrame(Model & model, int width, int height)
+{
+	for (int i = 0; i < model.nfaces(); i++) {
+		std::vector<int> face = model.face(i);
+		Vec2i screen_coords[3];
+		for (int j = 0; j < 3; j++) {
+			Vec3f world_coords = model.vert(face[j]);
+			screen_coords[j] = Vec2i((world_coords.x + 1.)*width / 2., (world_coords.y + 1.)*height / 2.);
+		}
+		DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
+	}
+}

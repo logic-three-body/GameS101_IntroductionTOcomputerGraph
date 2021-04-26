@@ -5,5 +5,5 @@ const TGAColor green = TGAColor(0, 255, 0, 255);
 const auto path = "obj/african_head/african_head.obj";
 const int width = 300;
 const int height = 300;
-//static Model model(path);
+static Model model(path);
 static TGAImage image(width, height, TGAImage::RGB);

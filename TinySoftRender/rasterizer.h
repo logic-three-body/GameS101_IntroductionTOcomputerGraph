@@ -34,5 +34,7 @@ public:
 	void DrawInterpolateTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor&color);
 	void DrawWireFrame(Model & model, int width, int height,const TGAColor&color);
 	void DrawWireFrame(Model & model, const TGAColor&color);
+	void DrawFlatFrame(Model & model);
+	void DrawFlatFrame(Model & model, int width, int height);
 };
 
