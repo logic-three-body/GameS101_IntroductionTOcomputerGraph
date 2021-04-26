@@ -14,8 +14,8 @@ public:
 	void Resize(int _width, int _height) { width = _width; height = _height; };//重定义光栅化器大小
 	//Bresenham绘制线
 	void lineBresenham(int x0, int y0, int x1, int y1, TGAImage&img, const TGAColor&color);
-	void lineBresenham(Point p0,Point p1, TGAImage&img, const TGAColor&color);
-	void DrawTrangile(Triangle&t, TGAImage&img, const TGAColor&color);
+	void lineBresenham(Pointi p0,Pointi p1, TGAImage&img, const TGAColor&color);
+	void DrawTrangile(Trianglei&t, TGAImage&img, const TGAColor&color);
 	void DrawWireFrame(Model & model,int width,int height, TGAImage&img, const TGAColor&color);
 	void DrawWireFrame(Model & model,TGAImage&img,const TGAColor&color);
 };

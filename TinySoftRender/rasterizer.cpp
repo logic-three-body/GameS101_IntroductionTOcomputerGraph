@@ -29,12 +29,12 @@ void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, TGAImage & img, c
 	}
 }
 
-void rasterizer::lineBresenham(Point p0, Point p1, TGAImage&img, const TGAColor&color)
+void rasterizer::lineBresenham(Pointi p0, Pointi p1, TGAImage&img, const TGAColor&color)
 {
 	lineBresenham(p0.x,p0.y,p1.x,p1.y,img,color);
 }
 
-void rasterizer::DrawTrangile(Triangle & t, TGAImage&img, const TGAColor&color)
+void rasterizer::DrawTrangile(Trianglei & t, TGAImage&img, const TGAColor&color)
 {
 	lineBresenham(t.p1,t.p2,img,color);
 	lineBresenham(t.p2,t.p3,img,color);
