@@ -72,10 +72,10 @@ void FilltriangleLower(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &image, TGAColor c
 	}
 }
 int main(int argc, char** argv) {
-	auto path = "Lesson2rasterizer/Trangile/test.tga";
+	auto path1 = "Lesson2rasterizer/Trangile/test2.tga";
 	rasterizer r(width,height);
 	r.DrawWireFrame(model,white);
-	image = r.GiveBuffer();
-	image.write_tga_file(path);
+	r.WriteBuffer(path1);
+	r.ReadBuffer(path1);
 	return 0;
 }

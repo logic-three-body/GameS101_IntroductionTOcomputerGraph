@@ -21,6 +21,8 @@ public:
 	void Resize(int _width, int _height) { width = _width; height = _height; };//重定义光栅化器大小
 	void GetFrameBuffer(TGAImage&img) { frameBuffer = img; };
 	TGAImage GiveBuffer() { return frameBuffer; };
+	void WriteBuffer(const char* path) { frameBuffer.write_tga_file(path); };
+	void ReadBuffer(const char* path) { frameBuffer.read_tga_file(path); };
 	//Bresenham绘制线
 	void lineBresenham(int x0, int y0, int x1, int y1,const TGAColor&color);
 	void lineBresenham(Vec2i p0, Vec2i p1,const TGAColor&color);
