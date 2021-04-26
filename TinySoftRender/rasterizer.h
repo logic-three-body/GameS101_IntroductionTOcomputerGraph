@@ -36,7 +36,7 @@ public:
 	void DrawWireFrame(Model & model, const TGAColor&color);
 	void DrawFlatFrame(Model & model);
 	void DrawFlatFrame(Model & model, int width, int height);
-	void DrawGrayFrame(Model & model);
-	void DrawGrayFrame(Model & model, int width, int height);
+	void DrawGrayFrame(Model & model, Vec3f light_dir);
+	void DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir);
 };
 

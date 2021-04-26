@@ -160,12 +160,12 @@ void rasterizer::DrawFlatFrame(Model & model, int width, int height)
 	}
 }
 
-void rasterizer::DrawGrayFrame(Model & model)
+void rasterizer::DrawGrayFrame(Model & model, Vec3f light_dir = Vec3f(0,0,0))
 {
-	DrawGrayFrame(model, width, height);
+	DrawGrayFrame(model, width, height,light_dir);
 }
 
-void rasterizer::DrawGrayFrame(Model & model, int width, int height)
+void rasterizer::DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir = Vec3f(0,0,0))
 {
 	for (int i = 0; i < model.nfaces(); i++) {
 		std::vector<int> face = model.face(i);
@@ -178,7 +178,6 @@ void rasterizer::DrawGrayFrame(Model & model, int width, int height)
 		}
 		Vec3f n = cross((world_coords[2] - world_coords[0]), (world_coords[1] - world_coords[0]));
 		n.normalize();
-		Vec3f light_dir(2,2,2);
 		float intensity = n * light_dir;
 		if (intensity > 0) {
 			DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
