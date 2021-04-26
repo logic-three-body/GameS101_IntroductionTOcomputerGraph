@@ -1,6 +1,5 @@
 #include "rasterizer.h"
-
-void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, TGAImage & img, const TGAColor & color)
+void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, const TGAColor & color)
 {
 	bool steep = false;
 	if (std::abs(x0 - x1) < std::abs(y0 - y1))
@@ -20,57 +19,57 @@ void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, TGAImage & img, c
 		int y = y0 * (1.0f - t) + y1 * t;
 		if (steep)
 		{
-			img.set(y, x, color);
+			frameBuffer.set(y, x, color);
 		}
 		else
 		{
-			img.set(x, y, color);
+			frameBuffer.set(x, y, color);
 		}
 	}
 }
 
-void rasterizer::lineBresenham(Pointi p0, Pointi p1, TGAImage&img, const TGAColor&color)
+void rasterizer::lineBresenham(Vec2i p0, Vec2i p1, const TGAColor & color)
 {
-	lineBresenham(p0.x,p0.y,p1.x,p1.y,img,color);
+	lineBresenham(p0.x, p0.y, p1.x, p1.y,color);
 }
 
-void rasterizer::DrawWireTrangile(Trianglei & t, TGAImage&img, const TGAColor&color)
+void rasterizer::DrawWireTrangile(Trianglei & t, const TGAColor & color)
 {
-	DrawWireTrangile(t.p0,t.p1,t.p2,img,color);
+	DrawWireTrangile(t.p0, t.p1, t.p2, color);
 }
 
-void rasterizer::DrawWireTrangile(Pointi p0, Pointi p1, Pointi p2, TGAImage & img, const TGAColor & color)
+void rasterizer::DrawWireTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
 {
-	lineBresenham(p0, p1, img, color);
-	lineBresenham(p1, p2, img, color);
-	lineBresenham(p2, p0, img, color);
+	lineBresenham(p0, p1, color);
+	lineBresenham(p1, p2, color);
+	lineBresenham(p2, p0, color);
 }
 
-void rasterizer::DrawFillTrangile(Trianglei & t, TGAImage & img, const TGAColor & color)
+void rasterizer::DrawFillTrangile(Trianglei & t, const TGAColor & color)
 {
-	DrawFillTrangile(t.p0, t.p1, t.p2, img, color);
+	DrawFillTrangile(t.p0, t.p1, t.p2, color);
 }
 
-void rasterizer::DrawFillTrangile(Pointi p0, Pointi p1, Pointi p2, TGAImage & img, const TGAColor & color)
+void rasterizer::DrawFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
 {
-	if (p0.y>p1.y)
+	if (p0.y > p1.y)
 	{
 		std::swap(p0, p1);
 	}
-	if (p0.y>p2.y)
+	if (p0.y > p2.y)
 	{
-		std::swap(p0,p2);
+		std::swap(p0, p2);
 	}
-	if (p1.y>p2.y)
+	if (p1.y > p2.y)
 	{
-		std::swap(p1,p2);
+		std::swap(p1, p2);
 	}
-	lineBresenham(p0, p1, img, color);
-	lineBresenham(p1, p2, img, color);
-	lineBresenham(p2, p0, img, color);
+	lineBresenham(p0, p1, color);
+	lineBresenham(p1, p2, color);
+	lineBresenham(p2, p0, color);
 }
 
-void rasterizer::DrawWireFrame(Model & model, int width, int height, TGAImage & img, const TGAColor & color)
+void rasterizer::DrawWireFrame(Model & model, int width, int height, const TGAColor & color)
 {
 	for (int i = 0; i < model.nfaces(); i++) {
 		std::vector<int> face = model.face(i);
@@ -81,12 +80,12 @@ void rasterizer::DrawWireFrame(Model & model, int width, int height, TGAImage & 
 			int y0 = (v0.y + 1.)*height / 2.;
 			int x1 = (v1.x + 1.)*width / 2.;
 			int y1 = (v1.y + 1.)*height / 2.;
-			lineBresenham(x0, y0, x1, y1, img, color);
+			lineBresenham(x0, y0, x1, y1,color);
 		}
 	}
 }
 
-void rasterizer::DrawWireFrame(Model & model, TGAImage & img, const TGAColor & color)
+void rasterizer::DrawWireFrame(Model & model, const TGAColor & color)
 {
-	DrawWireFrame(model,width,height,img,color);
+	DrawWireFrame(model, width, height,color);
 }

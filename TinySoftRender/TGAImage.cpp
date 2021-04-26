@@ -302,4 +302,12 @@ void TGAImage::scale(int w, int h) {
 	height = h;
 }
 
+void TGAImage::resize(int _width, int _height, int _bytespp)
+{
+	width = _width;
+	height=_height;
+	bytespp = _bytespp;
+	data.resize(width*height*bytespp, 0);
+}
+
 
