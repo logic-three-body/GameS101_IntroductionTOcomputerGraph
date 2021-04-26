@@ -109,7 +109,7 @@ void rasterizer::DrawInterpolateTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGA
 	Vec2i P;
 	for (P.x = boundingbox_min.x; P.x <= boundingbox_max.x; P.x++)
 	{
-		for (P.y = 0; P.y <= boundingbox_max.y; P.y++)
+		for (P.y = boundingbox_min.y; P.y <= boundingbox_max.y; P.y++)
 		{
 			Vec3f bc_screen = barycentric(pts, P);
 			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) 
