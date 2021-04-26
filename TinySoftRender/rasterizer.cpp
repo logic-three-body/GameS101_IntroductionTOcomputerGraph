@@ -1,4 +1,4 @@
-#include "rasterizer.h"
+﻿#include "rasterizer.h"
 void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, const TGAColor & color)
 {
 	bool steep = false;
@@ -52,21 +52,35 @@ void rasterizer::DrawFillTrangile(Trianglei & t, const TGAColor & color)
 
 void rasterizer::DrawFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
 {
-	if (p0.y > p1.y)
-	{
-		std::swap(p0, p1);
+	// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) 
+	if (p0.y > p1.y) std::swap(p0, p1);
+	if (p0.y > p2.y) std::swap(p0, p2);
+	if (p1.y > p2.y) std::swap(p1, p2);
+	int total_height = p2.y - p0.y;//计算高度
+	//画p0->p1
+	for (int y = p0.y; y <= p1.y; y++) {
+		int segment_height = p1.y - p0.y + 1;
+		float alpha = (float)(y - p0.y) / total_height;
+		float beta = (float)(y - p0.y) / segment_height; // be careful with divisions by zero 
+		Vec2i A = p0 + (p2 - p0)*alpha;
+		Vec2i B = p0 + (p1 - p0)*beta;
+		if (A.x > B.x) std::swap(A, B);//水平扫描
+		for (int j = A.x; j <= B.x; j++) {
+			frameBuffer.set(j, y, color); // attention, due to int casts t0.y+i != A.y 
+		}
 	}
-	if (p0.y > p2.y)
-	{
-		std::swap(p0, p2);
+	//画p1->p2
+	for (int y = p1.y; y <= p2.y; y++) {
+		int segment_height = p2.y - p1.y + 1;
+		float alpha = (float)(y - p0.y) / total_height;
+		float beta = (float)(y - p1.y) / segment_height; // be careful with divisions by zero 
+		Vec2i A = p0 + (p2 - p0)*alpha;
+		Vec2i B = p1 + (p2 - p1)*beta;
+		if (A.x > B.x) std::swap(A, B);//水平扫描
+		for (int j = A.x; j <= B.x; j++) {
+			frameBuffer.set(j, y, color); // attention, due to int casts t0.y+i != A.y 
+		}
 	}
-	if (p1.y > p2.y)
-	{
-		std::swap(p1, p2);
-	}
-	lineBresenham(p0, p1, color);
-	lineBresenham(p1, p2, color);
-	lineBresenham(p2, p0, color);
 }
 
 void rasterizer::DrawWireFrame(Model & model, int width, int height, const TGAColor & color)

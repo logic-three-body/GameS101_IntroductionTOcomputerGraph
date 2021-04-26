@@ -31,18 +31,18 @@ void triangle(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &image, TGAColor color) {
 	line(t1, t2, image, green);
 	line(t2, t0, image, red);
 }
-void FilltriangleUpper(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &image, TGAColor color) {//draw horizontally
+void FilltriangleUpper(Vec2i p0, Vec2i p1, Vec2i p2, TGAImage &image, TGAColor color) {//draw horizontally
 	// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) 
-	if (t0.y > t1.y) std::swap(t0, t1);
-	if (t0.y > t2.y) std::swap(t0, t2);
-	if (t1.y > t2.y) std::swap(t1, t2);
-	int total_height = t2.y - t0.y;//计算高度
-	for (int y = t0.y; y <= t1.y; y++) {
-		int segment_height = t1.y - t0.y + 1;
-		float alpha = (float)(y - t0.y) / total_height;
-		float beta = (float)(y - t0.y) / segment_height; // be careful with divisions by zero 
-		Vec2i A = t0 + (t2 - t0)*alpha;
-		Vec2i B = t0 + (t1 - t0)*beta;
+	if (p0.y > p1.y) std::swap(p0, p1);
+	if (p0.y > p2.y) std::swap(p0, p2);
+	if (p1.y > p2.y) std::swap(p1, p2);
+	int total_height = p2.y - p0.y;//计算高度
+	for (int y = p0.y; y <= p1.y; y++) {
+		int segment_height = p1.y - p0.y + 1;
+		float alpha = (float)(y - p0.y) / total_height;
+		float beta = (float)(y - p0.y) / segment_height; // be careful with divisions by zero 
+		Vec2i A = p0 + (p2 - p0)*alpha;
+		Vec2i B = p0 + (p1 - p0)*beta;
 		image.set(A.x, y, red);
 		image.set(B.x, y, green);
 		if (A.x > B.x) std::swap(A, B);//水平扫描
@@ -52,19 +52,19 @@ void FilltriangleUpper(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &image, TGAColor c
 	}
 }
 
-void FilltriangleLower(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &image, TGAColor color)
+void FilltriangleLower(Vec2i p0, Vec2i p1, Vec2i p2, TGAImage &image, TGAColor color)
 {
 	// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) 
-	if (t0.y > t1.y) std::swap(t0, t1);
-	if (t0.y > t2.y) std::swap(t0, t2);
-	if (t1.y > t2.y) std::swap(t1, t2);
-	int total_height = t2.y - t0.y;
-	for (int y = t1.y; y <= t2.y; y++) {
-		int segment_height = t2.y - t1.y + 1;
-		float alpha = (float)(y - t0.y) / total_height;
-		float beta = (float)(y - t1.y) / segment_height; // be careful with divisions by zero 
-		Vec2i A = t0 + (t2 - t0)*alpha;
-		Vec2i B = t1 + (t2 - t1)*beta;
+	if (p0.y > p1.y) std::swap(p0, p1);
+	if (p0.y > p2.y) std::swap(p0, p2);
+	if (p1.y > p2.y) std::swap(p1, p2);
+	int total_height = p2.y - p0.y;
+	for (int y = p1.y; y <= p2.y; y++) {
+		int segment_height = p2.y - p1.y + 1;
+		float alpha = (float)(y - p0.y) / total_height;
+		float beta = (float)(y - p1.y) / segment_height; // be careful with divisions by zero 
+		Vec2i A = p0 + (p2 - p0)*alpha;
+		Vec2i B = p1 + (p2 - p1)*beta;
 		if (A.x > B.x) std::swap(A, B);//水平扫描
 		for (int j = A.x; j <= B.x; j++) {
 			image.set(j, y, color); // attention, due to int casts t0.y+i != A.y 
