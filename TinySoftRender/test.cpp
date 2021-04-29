@@ -42,8 +42,8 @@ void rasterize(Vec2i p0, Vec2i p1, TGAImage &image, TGAColor color, int ybuffer[
 	for (int x = p0.x; x <= p1.x; x++) {
 		float t = (x - p0.x) / (float)(p1.x - p0.x);
 		int y = p0.y*(1. - t) + p1.y*t + .5;//插值
-		if (ybuffer[x] < y) {
-			ybuffer[x] = y;
+		if (ybuffer[x] > y) {
+			ybuffer[x] = y;//永远保留最小的
 			image.set(x, 0, color);
 		}
 	}
@@ -54,31 +54,26 @@ int main(int argc, char** argv) {
 		TGAImage scene(width, height, TGAImage::RGB);
 
 		// scene "2d mesh"
-		line(Vec2i(20, 34), Vec2i(744, 400), scene, red);
-		line(Vec2i(120, 434), Vec2i(444, 400), scene, green);
-		line(Vec2i(330, 463), Vec2i(594, 200), scene, blue);
+		line(Vec2i(20, 34), Vec2i(700, 30), scene, red);
+		line(Vec2i(20, 34), Vec2i(730, 80), scene, green);
+		line(Vec2i(20, 34), Vec2i(750, 110), scene, blue);
 
 		// screen line
 		line(Vec2i(10, 10), Vec2i(790, 10), scene, white);
 
-		scene.flip_vertically(); // i want to have the origin at the left bottom corner of the image
-		//scene.write_tga_file("Lesson3Zbuffer/YBuffer/scene.tga");
+		//scene.flip_vertically(); // i want to have the origin at the left bottom corner of the image
+		scene.write_tga_file("Lesson3Zbuffer/YBuffer/scene1.tga");
 	}
 
 	{
 		TGAImage render(width, 16, TGAImage::RGB);
 		int ybuffer[width];
 		for (int i = 0; i < width; i++) {
-			ybuffer[i] = std::numeric_limits<int>::min();
+			ybuffer[i] = std::numeric_limits<int>::max();
 		}
 		rasterize(Vec2i(20, 34), Vec2i(744, 400), render, red, ybuffer);
-		render.write_tga_file("Lesson3Zbuffer/YBuffer/renderR.tga");
-
 		rasterize(Vec2i(120, 434), Vec2i(444, 400), render, green, ybuffer);
-		render.write_tga_file("Lesson3Zbuffer/YBuffer/renderG.tga");
-
 		rasterize(Vec2i(330, 463), Vec2i(594, 200), render, blue, ybuffer);
-		render.write_tga_file("Lesson3Zbuffer/YBuffer/renderB.tga");
 
 
 		// 1-pixel wide image is bad for eyes, lets widen it
