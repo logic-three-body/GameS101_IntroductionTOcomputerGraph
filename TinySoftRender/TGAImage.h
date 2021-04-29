@@ -66,7 +66,7 @@ public:
 	void flip_vertically();
 	void scale(const int w, const int h);
 	void resize(int width,int height,int bytespp);
-	TGAColor get(const int x, const int y) const;
+	TGAColor getColor(const int x, const int y) const;
 	void set(const int x, const int y, const TGAColor &c);
 	int get_width() const;
 	int get_height() const;
