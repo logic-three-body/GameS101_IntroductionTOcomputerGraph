@@ -1,7 +1,7 @@
 ﻿#include"FrameWork.h"
 #include"global.h"
 int main(int argc, char** argv) {
-	auto path1 = "Lesson3Zbuffer/ZBuffer/Test/test.tga";
+	auto path1 = "Lesson3Zbuffer/ZBuffer/Test/test3.tga";
 	auto path2 = "Lesson3Zbuffer/ZBuffer/Test/test1.tga";
 	rasterizer r(width,height);
 	r.InitZBuffer();
@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
 		n.normalize();
 		float intensity = n * light_dir;
 		if (intensity > 0) {
-			r.DrawFillTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
+			r.DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
 		}
 	}
 

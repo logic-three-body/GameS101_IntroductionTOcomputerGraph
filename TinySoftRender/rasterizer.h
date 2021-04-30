@@ -26,6 +26,10 @@ public:
 	void ReadBuffer(const char* path) { frameBuffer.read_tga_file(path); };
 	void ClearBuffer() { frameBuffer.clear(); };
 	void InitZBuffer();
+	Vec3f world2screen(Vec3f v) {//世界坐标转屏幕坐标
+		return Vec3f(int((v.x + 1.)*width / 2. + .5), int((v.y + 1.)*height / 2. + .5), v.z);
+	}
+
 	//Bresenham绘制线
 	void lineBresenham(int x0, int y0, int x1, int y1,const TGAColor&color);
 	void lineBresenham(Vec2i p0, Vec2i p1,const TGAColor&color);
@@ -45,5 +49,7 @@ public:
 	//3D
 	void DrawFillTrangile(Triangle3i&t, const TGAColor&color);
 	void DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
+	void DrawInterpolateTrangile(Triangle3i&t, const TGAColor&color);
+	void DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
 };
 

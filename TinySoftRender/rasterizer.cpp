@@ -224,3 +224,38 @@ void rasterizer::DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor &
 		}
 	}
 }
+
+void rasterizer::DrawInterpolateTrangile(Triangle3i & t, const TGAColor & color)
+{
+	DrawInterpolateTrangile(t.p0, t.p1, t.p2, color);
+}
+
+void rasterizer::DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor & color)
+{
+	Vec3i* pts = new Vec3i[3];
+	pts[0] = p0;
+	pts[1] = p1;
+	pts[2] = p2;
+	Vec2i bboxmin(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
+	Vec2i bboxmax(-std::numeric_limits<int>::max(), -std::numeric_limits<int>::max());
+	Vec2i clamp(frameBuffer.get_width() - 1, frameBuffer.get_height() - 1);
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 2; j++) {
+			bboxmin[j] = std::max(0, std::min(bboxmin[j], pts[i][j]));
+			bboxmax[j] = std::min(clamp[j], std::max(bboxmax[j], pts[i][j]));
+		}
+	}
+	Vec3i P;
+	for (P.x = bboxmin.x; P.x <= bboxmax.x; P.x++) {
+		for (P.y = bboxmin.y; P.y <= bboxmax.y; P.y++) {
+			Vec3i bc_screen = barycentric(pts[0], pts[1], pts[2], P);
+			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) continue;
+			P.z = 0;
+			for (int i = 0; i < 3; i++) P.z += pts[i][2] * bc_screen[i];
+			if (ZBuffer[int(P.x + P.y*width)] > P.z) {
+				ZBuffer[int(P.x + P.y*width)] = P.z;
+				frameBuffer.setpixel(P.x, P.y, color);
+			}
+		}
+	}
+}
