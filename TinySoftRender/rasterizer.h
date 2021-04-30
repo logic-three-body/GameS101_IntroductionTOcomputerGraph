@@ -50,6 +50,8 @@ public:
 	//3D
 	void DrawFillTrangile(Triangle3i&t, const TGAColor&color);
 	void DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
+	void DrawFillTrangile(Triangle3f&t, const TGAColor&color);
+	void DrawFillTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGAColor&color);
 	void DrawInterpolateTrangile(Triangle3i&t, const TGAColor&color);
 	void DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
 	void DrawInterpolateTrangile(Triangle3f&t, const TGAColor&color);

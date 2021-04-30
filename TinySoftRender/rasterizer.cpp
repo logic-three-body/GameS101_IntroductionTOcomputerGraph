@@ -215,7 +215,40 @@ void rasterizer::DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor &
 			Vec3i P = A + (B - A)*phi;
 			P.x = j; P.y = p0.y + i; // a hack to fill holes (due to int cast precision problems)
 			int idx = j + (p0.y + i)*width;
-			if (ZBuffer[idx] > P.z) {//深度更大的会进来
+			if (ZBuffer[idx] < P.z) {//Z值小的会进来
+				ZBuffer[idx] = P.z;
+				frameBuffer.setpixel(P.x, P.y, color); // attention, due to int casts t0.y+i != A.y
+			}
+		}
+	}
+}
+
+void rasterizer::DrawFillTrangile(Triangle3f & t, const TGAColor & color)
+{
+	DrawFillTrangile(t.p0, t.p1, t.p2, color);
+}
+
+void rasterizer::DrawFillTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGAColor & color)
+{
+	if (p0.y == p1.y && p0.y == p2.y) return; // i dont care about degenerate triangles
+	if (p0.y > p1.y) std::swap(p0, p1);
+	if (p0.y > p2.y) std::swap(p0, p2);
+	if (p1.y > p2.y) std::swap(p1, p2);
+	int total_height = p2.y - p0.y;
+	for (int i = 0; i < total_height; i++) {
+		bool second_half = i > p1.y - p0.y || p1.y == p0.y;
+		int segment_height = second_half ? p2.y - p1.y : p1.y - p0.y;
+		float alpha = (float)i / total_height;
+		float beta = (float)(i - (second_half ? p1.y - p0.y : 0)) / segment_height; // be careful: with above conditions no division by zero here
+		Vec3f A = p0 + (p2 - p0)*alpha;
+		Vec3f B = second_half ? p1 + (p2 - p1)*beta : p0 + (p1 - p0)*beta;
+		if (A.x > B.x) std::swap(A, B);
+		for (int j = A.x; j <= B.x; j++) {
+			float phi = B.x == A.x ? 1. : (float)(j - A.x) / (float)(B.x - A.x);
+			Vec3f P = A + (B - A)*phi;
+			P.x = j; P.y = p0.y + i; // a hack to fill holes (due to int cast precision problems)
+			int idx = j + (p0.y + i)*width;
+			if (ZBuffer[idx] < P.z) {//Z值大的会进来(模型空间)
 				ZBuffer[idx] = P.z;
 				frameBuffer.setpixel(P.x, P.y, color); // attention, due to int casts t0.y+i != A.y
 			}
