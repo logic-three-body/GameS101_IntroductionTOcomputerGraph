@@ -215,7 +215,7 @@ TGAColor TGAImage::getColor(const int x, const int y) const {
 	return TGAColor(data.data() + (x + y * width)*bytespp, bytespp);
 }
 
-void TGAImage::set(int x, int y, const TGAColor &c) {
+void TGAImage::setpixel(int x, int y, const TGAColor &c) {
 	if (!data.size() || x < 0 || y < 0 || x >= width || y >= height) return;
 	memcpy(data.data() + (x + y * width)*bytespp, c.bgra, bytespp);
 }
@@ -239,8 +239,8 @@ void TGAImage::flip_horizontally() {
 		for (int j = 0; j < height; j++) {
 			TGAColor c1 = getColor(i, j);
 			TGAColor c2 = getColor(width - 1 - i, j);
-			set(i, j, c2);
-			set(width - 1 - i, j, c1);
+			setpixel(i, j, c2);
+			setpixel(width - 1 - i, j, c1);
 		}
 	}
 }

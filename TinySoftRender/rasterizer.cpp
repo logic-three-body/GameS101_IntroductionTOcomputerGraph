@@ -1,5 +1,12 @@
 ﻿#include "rasterizer.h"
 #include"compute.h"
+void rasterizer::InitZBuffer()
+{
+	ZBuffer = new int[width*height];
+	for (int i = 0; i < width*height; i++) {
+		ZBuffer[i] = std::numeric_limits<int>::max();
+	}
+}
 void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, const TGAColor & color)
 {
 	bool steep = false;
@@ -20,11 +27,11 @@ void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, const TGAColor & 
 		int y = y0 * (1.0f - t) + y1 * t;
 		if (steep)
 		{
-			frameBuffer.set(y, x, color);
+			frameBuffer.setpixel(y, x, color);
 		}
 		else
 		{
-			frameBuffer.set(x, y, color);
+			frameBuffer.setpixel(x, y, color);
 		}
 	}
 }
@@ -67,7 +74,7 @@ void rasterizer::DrawFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor &
 		Vec2i B = p0 + (p1 - p0)*beta;
 		if (A.x > B.x) std::swap(A, B);//水平扫描
 		for (int j = A.x; j <= B.x; j++) {
-			frameBuffer.set(j, y, color); // attention, due to int casts t0.y+i != A.y 
+			frameBuffer.setpixel(j, y, color); // attention, due to int casts t0.y+i != A.y 
 		}
 	}
 	//画p1->p2
@@ -79,7 +86,7 @@ void rasterizer::DrawFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor &
 		Vec2i B = p1 + (p2 - p1)*beta;
 		if (A.x > B.x) std::swap(A, B);//水平扫描
 		for (int j = A.x; j <= B.x; j++) {
-			frameBuffer.set(j, y, color); // attention, due to int casts t0.y+i != A.y 
+			frameBuffer.setpixel(j, y, color); // attention, due to int casts t0.y+i != A.y 
 		}
 	}
 }
@@ -114,7 +121,7 @@ void rasterizer::DrawInterpolateTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGA
 			Vec3f bc_screen = barycentric(pts, P);
 			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) 
 				continue;
-			frameBuffer.set(P.x,P.y,color);
+			frameBuffer.setpixel(P.x,P.y,color);
 		}
 	}
 
@@ -181,6 +188,55 @@ void rasterizer::DrawGrayFrame(Model & model, int width, int height, Vec3f light
 		float intensity = n * light_dir;
 		if (intensity > 0) {
 			DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
+		}
+	}
+}
+
+void rasterizer::DrawFillTrangile(Triangle3i & t, const TGAColor & color)
+{
+	DrawFillTrangile(t.p0, t.p1, t.p2, color);
+}
+
+void rasterizer::DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor & color)
+{
+	if (p0.y==p1.y&&p0.y==p2.y)//exclude degenerate 
+	{
+		return;
+	}
+	if (p0.y > p1.y) std::swap(p0, p1);
+	if (p0.y > p2.y) std::swap(p0, p2);
+	if (p1.y > p2.y) std::swap(p1, p2);
+	int total_height = p2.y - p0.y;
+	//画p0->p1
+	for (int y = p0.y; y <= p1.y; y++) {
+		int segment_height = p1.y - p0.y + 1;
+		float alpha = (float)(y - p0.y) / total_height;
+		float beta = (float)(y - p0.y) / segment_height; // be careful with divisions by zero 
+		Vec3i A = p0 + (p2 - p0)*alpha;
+		Vec3i B = p0 + (p1 - p0)*beta;
+		if (A.x > B.x) std::swap(A, B);//水平扫描
+		for (int j = A.x; j <= B.x; j++) {
+			float phi = B.x == A.x ? 1. : (float)(j - A.x) / (float)(B.x - A.x);
+			Vec3i P = A + (B - A)*phi;
+			P.x = j; P.y = p0.y + y; // a hack to fill holes (due to int cast precision problems)
+			int idx = j;
+			if (ZBuffer[idx] > P.z)
+			{
+				ZBuffer[idx] = P.z;
+				frameBuffer.setpixel(j, y, color); // attention, due to int casts t0.y+i != A.y 
+			}
+		}
+	}
+	//画p1->p2
+	for (int y = p1.y; y <= p2.y; y++) {
+		int segment_height = p2.y - p1.y + 1;
+		float alpha = (float)(y - p0.y) / total_height;
+		float beta = (float)(y - p1.y) / segment_height; // be careful with divisions by zero 
+		Vec3i A = p0 + (p2 - p0)*alpha;
+		Vec3i B = p1 + (p2 - p1)*beta;
+		if (A.x > B.x) std::swap(A, B);//水平扫描
+		for (int j = A.x; j <= B.x; j++) {
+			frameBuffer.setpixel(j, y, color); // attention, due to int casts t0.y+i != A.y 
 		}
 	}
 }
