@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
 		Vec3f world_coords[3];
 		for (int j = 0; j < 3; j++) {
 			Vec3f v = model.vert(face[j]);
-			screen_coords[j] = Vec3i((v.x + 1.)*width / 2., (v.y + 1.)*height / 2., (v.z + 1.)*depth / 2.);
+			screen_coords[j] = Vec3i((v.x + 1.)*width / 2., (v.y + 1.)*height / 2., -(v.z + 1.)*depth / 2.);
 			world_coords[j] = v;
 		}
 		Vec3f n = cross((world_coords[2] - world_coords[0]), (world_coords[1] - world_coords[0]));

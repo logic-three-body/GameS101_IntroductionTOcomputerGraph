@@ -4,7 +4,7 @@ void rasterizer::InitZBuffer()
 {
 	ZBuffer = new int[width*height];
 	for (int i = 0; i < width*height; i++) {
-		ZBuffer[i] = std::numeric_limits<int>::min();
+		ZBuffer[i] = std::numeric_limits<int>::max();
 	}
 }
 void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, const TGAColor & color)
@@ -217,7 +217,7 @@ void rasterizer::DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor &
 			Vec3i P = A + (B - A)*phi;
 			P.x = j; P.y = p0.y + i; // a hack to fill holes (due to int cast precision problems)
 			int idx = j + (p0.y + i)*width;
-			if (ZBuffer[idx] < P.z) {
+			if (ZBuffer[idx] > P.z) {//深度更大的会进来
 				ZBuffer[idx] = P.z;
 				frameBuffer.setpixel(P.x, P.y, color); // attention, due to int casts t0.y+i != A.y
 			}
