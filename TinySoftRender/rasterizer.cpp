@@ -2,9 +2,9 @@
 #include"compute.h"
 void rasterizer::InitZBuffer()
 {
-	ZBuffer = new int[width*height];
+	ZBuffer = new float[width*height];
 	for (int i = 0; i < width*height; i++) {
-		ZBuffer[i] = std::numeric_limits<int>::max();
+		ZBuffer[i] = std::numeric_limits<float>::max();
 	}
 }
 void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, const TGAColor & color)
@@ -249,6 +249,41 @@ void rasterizer::DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGA
 	for (P.x = bboxmin.x; P.x <= bboxmax.x; P.x++) {
 		for (P.y = bboxmin.y; P.y <= bboxmax.y; P.y++) {
 			Vec3i bc_screen = barycentric(pts[0], pts[1], pts[2], P);
+			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) continue;
+			P.z = 0;
+			for (int i = 0; i < 3; i++) P.z += pts[i][2] * bc_screen[i];
+			if (ZBuffer[int(P.x + P.y*width)] > P.z) {
+				ZBuffer[int(P.x + P.y*width)] = P.z;
+				frameBuffer.setpixel(P.x, P.y, color);
+			}
+		}
+	}
+}
+
+void rasterizer::DrawInterpolateTrangile(Triangle3f & t, const TGAColor & color)
+{
+	DrawInterpolateTrangile(t.p0, t.p1, t.p2, color);
+}
+
+void rasterizer::DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGAColor & color)
+{
+	Vec3f* pts = new Vec3f[3];
+	pts[0] = p0;
+	pts[1] = p1;
+	pts[2] = p2;
+	Vec2f bboxmin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+	Vec2f bboxmax(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+	Vec2f clamp(frameBuffer.get_width() - 1, frameBuffer.get_height() - 1);
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 2; j++) {
+			bboxmin[j] = std::max(0.f, std::min(bboxmin[j], pts[i][j]));
+			bboxmax[j] = std::min(clamp[j], std::max(bboxmax[j], pts[i][j]));
+		}
+	}
+	Vec3f P;
+	for (P.x = bboxmin.x; P.x <= bboxmax.x; P.x++) {
+		for (P.y = bboxmin.y; P.y <= bboxmax.y; P.y++) {
+			Vec3f bc_screen = barycentric(pts[0], pts[1], pts[2], P);
 			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) continue;
 			P.z = 0;
 			for (int i = 0; i < 3; i++) P.z += pts[i][2] * bc_screen[i];

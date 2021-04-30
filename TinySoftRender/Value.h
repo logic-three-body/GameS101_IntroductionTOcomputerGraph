@@ -46,4 +46,28 @@ typedef struct Triangle3i
 	};
 };
 
+typedef struct Triangle3f
+{
+	Vec3f p0;
+	Vec3f p1;
+	Vec3f p2;
+
+	Triangle3f() :p0(Vec3f(0, 0, 0)), p1(Vec3f(0, 0, 0)), p2(Vec3f(0, 0, 0)) {};
+	Triangle3f(Vec3f _p0, Vec3f _p1, Vec3f _p2) :p0(_p0), p1(_p1), p2(_p2) {};
+	Triangle3f(Vec3f*vi)
+	{
+		if (vi)
+		{
+			p0 = vi[0];
+			p1 = vi[1];
+			p2 = vi[2];
+		}
+		else
+		{
+			Triangle3f();
+		}
+	};
+};
+
+
 

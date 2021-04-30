@@ -12,7 +12,8 @@ private:
 	int width;//光栅化器宽
 	int height;//光栅化器长
 	TGAImage frameBuffer;
-	int* ZBuffer;//深度检测
+	float* ZBuffer;//深度检测
+	
 public:
 	//构造函数
 	rasterizer() :width(0), height(0) { frameBuffer.resize(width,height,TGAImage::RGB); };
@@ -51,5 +52,7 @@ public:
 	void DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
 	void DrawInterpolateTrangile(Triangle3i&t, const TGAColor&color);
 	void DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
+	void DrawInterpolateTrangile(Triangle3f&t, const TGAColor&color);
+	void DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGAColor&color);
 };
 
