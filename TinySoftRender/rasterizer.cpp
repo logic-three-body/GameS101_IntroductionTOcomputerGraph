@@ -219,7 +219,7 @@ void rasterizer::DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor &
 			float phi = B.x == A.x ? 1. : (float)(j - A.x) / (float)(B.x - A.x);
 			Vec3i P = A + (B - A)*phi;
 			P.x = j; P.y = p0.y + y; // a hack to fill holes (due to int cast precision problems)
-			int idx = j+p0.y*width;
+			int idx = j+(p0.y+y)*width;
 			if (ZBuffer[idx] > P.z)
 			{
 				ZBuffer[idx] = P.z;
@@ -239,7 +239,7 @@ void rasterizer::DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor &
 			float phi = B.x == A.x ? 1. : (float)(j - A.x) / (float)(B.x - A.x);
 			Vec3i P = A + (B - A)*phi;
 			P.x = j; P.y = p0.y + y; // a hack to fill holes (due to int cast precision problems)
-			int idx = j + p0.y*width;
+			int idx = j + (p0.y + y)*width;
 			if (ZBuffer[idx] > P.z)
 			{
 				ZBuffer[idx] = P.z;
