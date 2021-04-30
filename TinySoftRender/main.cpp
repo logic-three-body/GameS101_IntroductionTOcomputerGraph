@@ -11,6 +11,9 @@ int main(int argc, char** argv) {
 		Vec3f pts[3];
 		for (int i = 0; i < 3; i++) pts[i] = r.world2screen(model.vert(face[i]));
 		Triangle3f t(pts);
+		Vec3f n = cross((pts[2] - pts[0]), (pts[1] - pts[0]));
+		n.normalize();
+		float intensity = n * light_dir;
 		r.DrawInterpolateTrangile(t,TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
 	}
 

@@ -3,9 +3,7 @@
 void rasterizer::InitZBuffer()
 {
 	ZBuffer = new float[width*height];
-	for (int i = 0; i < width*height; i++) {
-		ZBuffer[i] = std::numeric_limits<float>::max();
-	}
+	for (int i = width * height; i--; ZBuffer[i] = -std::numeric_limits<float>::max());
 }
 void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, const TGAColor & color)
 {
@@ -287,7 +285,7 @@ void rasterizer::DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGA
 			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) continue;
 			P.z = 0;
 			for (int i = 0; i < 3; i++) P.z += pts[i][2] * bc_screen[i];
-			if (ZBuffer[int(P.x + P.y*width)] > P.z) {
+			if (ZBuffer[int(P.x + P.y*width)] < P.z) {
 				ZBuffer[int(P.x + P.y*width)] = P.z;
 				frameBuffer.setpixel(P.x, P.y, color);
 			}
