@@ -63,6 +63,8 @@ public:
 	void DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir);
 	void DrawColorfulFrame(Model & model);
 	void DrawColorfulFrame(Model & model, int width, int height);
+	void DrawModelFrame(Model & model, Vec3f light_dir);
+	void DrawModelFrame(Model & model, int width, int height, Vec3f light_dir);
 
 
 	//±ä»»
