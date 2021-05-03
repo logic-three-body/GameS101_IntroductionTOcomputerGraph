@@ -42,14 +42,14 @@ public:
 	//2D
 	void DrawFillTrangile(Trianglei&t,const TGAColor&color);
 	void DrawFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2,const TGAColor&color);
-	void DrawInterpolateTrangile(Trianglei&t, const TGAColor&color);
-	void DrawInterpolateTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor&color);
+	void DrawInterpolate2DTrangile(Trianglei&t, const TGAColor&color);
+	void DrawInterpolate2DTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor&color);
 	void DrawWireFrame(Model & model, int width, int height,const TGAColor&color);
 	void DrawWireFrame(Model & model, const TGAColor&color);
 	void DrawFlatFrame(Model & model);
 	void DrawFlatFrame(Model & model, int width, int height);
-	void DrawGrayFrame(Model & model, Vec3f light_dir);
-	void DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir);
+	void DrawGray2DFrame(Model & model, Vec3f light_dir);
+	void DrawGray2DFrame(Model & model, int width, int height, Vec3f light_dir);
 	//3D
 	void DrawFillTrangile(Triangle3i&t, const TGAColor&color);
 	void DrawFillTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
@@ -59,6 +59,9 @@ public:
 	void DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
 	void DrawInterpolateTrangile(Triangle3f&t, const TGAColor&color);
 	void DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGAColor&color);
+	void DrawGrayFrame(Model & model, Vec3f light_dir);
+	void DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir);
+
 
 	//±ä»»
 	void viewport(int x, int y, int w, int h);

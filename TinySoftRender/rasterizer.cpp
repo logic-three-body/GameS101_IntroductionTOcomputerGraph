@@ -89,12 +89,12 @@ void rasterizer::DrawFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor &
 	}
 }
 
-void rasterizer::DrawInterpolateTrangile(Trianglei&t, const TGAColor&color)
+void rasterizer::DrawInterpolate2DTrangile(Trianglei&t, const TGAColor&color)
 {
-	DrawInterpolateTrangile(t.p0, t.p1, t.p2, color);
+	DrawInterpolate2DTrangile(t.p0, t.p1, t.p2, color);
 }
 
-void rasterizer::DrawInterpolateTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
+void rasterizer::DrawInterpolate2DTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
 {
 	Vec2i* pts = new Vec2i[3];
 	pts[0] = p0;
@@ -161,16 +161,16 @@ void rasterizer::DrawFlatFrame(Model & model, int width, int height)
 			Vec3f world_coords = model.vert(face[j]);
 			screen_coords[j] = Vec2i((world_coords.x + 1.)*width / 2., (world_coords.y + 1.)*height / 2.);
 		}
-		DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
+		DrawInterpolate2DTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
 	}
 }
 
-void rasterizer::DrawGrayFrame(Model & model, Vec3f light_dir = Vec3f(0,0,0))
+void rasterizer::DrawGray2DFrame(Model & model, Vec3f light_dir = Vec3f(0,0,0))
 {
-	DrawGrayFrame(model, width, height,light_dir);
+	DrawGray2DFrame(model, width, height,light_dir);
 }
 
-void rasterizer::DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir = Vec3f(0,0,0))
+void rasterizer::DrawGray2DFrame(Model & model, int width, int height, Vec3f light_dir = Vec3f(0,0,0))
 {
 	for (int i = 0; i < model.nfaces(); i++) {
 		std::vector<int> face = model.face(i);
@@ -185,7 +185,7 @@ void rasterizer::DrawGrayFrame(Model & model, int width, int height, Vec3f light
 		n.normalize();
 		float intensity = n * light_dir;
 		if (intensity > 0) {
-			DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
+			DrawInterpolate2DTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
 		}
 	}
 }
@@ -323,6 +323,25 @@ void rasterizer::DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGA
 				frameBuffer.setpixel(P.x, P.y, color);
 			}
 		}
+	}
+}
+
+void rasterizer::DrawGrayFrame(Model & model, Vec3f light_dir)
+{
+	DrawGrayFrame(model, width, height, light_dir);
+}
+
+void rasterizer::DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir)
+{
+	for (int i = 0; i < model.nfaces(); i++) {
+		std::vector<int> face = model.face(i);
+		Vec3f pts[3];
+		for (int i = 0; i < 3; i++) pts[i] = world2screen(model.vert(face[i]));
+		Triangle3f t(pts);
+		Vec3f n = cross((pts[2] - pts[0]), (pts[1] - pts[0]));
+		n.normalize();
+		float intensity = n * light_dir.normalize();
+		DrawInterpolateTrangile(t, TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
 	}
 }
 
