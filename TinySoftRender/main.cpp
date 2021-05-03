@@ -12,8 +12,8 @@ mat<4, 1, float> v2m(Vec3f v) {//顶点至矩阵
 	return m;
 }
 int main(int argc, char** argv) {
-	auto path1 = "Lesson3Zbuffer/ZBuffer/Test/test13.tga";
-	auto path2 = "Lesson3Zbuffer/ZBuffer/Test/test1.tga";
+	auto path1 = "Lesson4Perspective/Test/test16.tga";
+	auto path2 = "Lesson4Perspective/Test/test1.tga";
 	rasterizer r(width,height);
 	r.InitZBuffer();
 	r.viewport(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 
 	for (int i = 0; i < model.nfaces(); i++) {
 		std::vector<int> face = model.face(i);
-		Vec3f screen_coords[3];
+		Vec3i screen_coords[3];
 		Vec3f world_coords[3];
 		for (int j = 0; j < 3; j++) {
 			Vec3f v = model.vert(face[j]);
@@ -32,7 +32,10 @@ int main(int argc, char** argv) {
 		n.normalize();
 		float intensity = n * light_dir;
 		if (intensity > 0) {
-			r.DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(int(intensity * 255) % 255, int(intensity * 255) % 255, int(intensity * 255) % 255, 255));
+			//r.DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(int(intensity * 255) % 255, int(intensity * 255) % 255, int(intensity * 255) % 255, 255));
+			//r.DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
+			r.DrawFillTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
+
 		}
 	}
 
