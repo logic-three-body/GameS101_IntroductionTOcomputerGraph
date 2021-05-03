@@ -61,6 +61,8 @@ public:
 	void DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGAColor&color);
 	void DrawGrayFrame(Model & model, Vec3f light_dir);
 	void DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir);
+	void DrawColorfulFrame(Model & model);
+	void DrawColorfulFrame(Model & model, int width, int height);
 
 
 	//±ä»»

@@ -352,6 +352,22 @@ void rasterizer::DrawGrayFrame(Model & model, int width, int height, Vec3f light
 	}
 }
 
+void rasterizer::DrawColorfulFrame(Model & model)
+{
+	DrawColorfulFrame(model, width, height);
+}
+
+void rasterizer::DrawColorfulFrame(Model & model, int width, int height)
+{
+	for (int i = 0; i < model.nfaces(); i++) {
+		std::vector<int> face = model.face(i);
+		Vec3f pts[3];
+		for (int i = 0; i < 3; i++) pts[i] = world2screen(model.vert(face[i]));
+		Triangle3f t(pts);
+		DrawInterpolateTrangile(t, TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
+	}
+}
+
 void rasterizer::viewport(int x, int y, int w, int h)
 {
 	Viewport = Matrix::identity();
