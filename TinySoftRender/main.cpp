@@ -12,7 +12,7 @@ mat<4, 1, float> v2m(Vec3f v) {//顶点至矩阵
 	return m;
 }
 int main(int argc, char** argv) {
-	auto path1 = "Lesson4Perspective/Test/test17.tga";
+	auto path1 = "Lesson4Perspective/Test/test18.tga";
 	auto path2 = "Lesson4Perspective/Test/test1.tga";
 	rasterizer r(width,height);
 	r.InitZBuffer();
