@@ -325,3 +325,25 @@ void rasterizer::DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGA
 		}
 	}
 }
+
+void rasterizer::viewport(int x, int y, int w, int h)
+{
+	Viewport = Matrix::identity();
+	Viewport[0][3] = x + w / 2.f;
+	Viewport[1][3] = y + h / 2.f;
+	Viewport[2][3] = 1.f;
+	Viewport[0][0] = w / 2.f;
+	Viewport[1][1] = h / 2.f;
+	Viewport[2][2] = 0;
+}
+
+void rasterizer::Prespect_projection(float coeff)
+{
+	Projection = Matrix::identity();
+	Projection[3][2] = coeff;
+}
+
+void rasterizer::projection()
+{
+	Projection = Matrix::identity();
+}

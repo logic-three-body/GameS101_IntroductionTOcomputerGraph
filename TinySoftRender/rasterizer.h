@@ -13,6 +13,9 @@ private:
 	int height;//光栅化器长
 	TGAImage frameBuffer;
 	float* ZBuffer;//深度检测
+	Matrix ModelView;//模型视角变换矩阵
+	Matrix Projection;//透视变换矩阵
+	Matrix Viewport;//视口变换矩阵
 	
 public:
 	//构造函数
@@ -56,5 +59,10 @@ public:
 	void DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
 	void DrawInterpolateTrangile(Triangle3f&t, const TGAColor&color);
 	void DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGAColor&color);
+
+	//变换
+	void viewport(int x, int y, int w, int h);
+	void Prespect_projection(float coeff = 0.f); // coeff = -1/c 透视投影
+	void projection();//正交投影
 };
 

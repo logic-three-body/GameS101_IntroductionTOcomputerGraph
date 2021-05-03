@@ -8,4 +8,4 @@ const int width = 800;
 const int height = 800;
 const int depth = 255;
 static Model model(path);
-static TGAImage image(width, height, TGAImage::RGB);
+static TGAImage image(width, height, TGAImage::GRAYSCALE);
