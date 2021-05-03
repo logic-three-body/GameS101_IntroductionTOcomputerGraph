@@ -72,5 +72,16 @@ public:
 	Matrix GetModelView() { return ModelView; }
 	Matrix GetProjection() { return Projection; }
 	Matrix GetViewPort() { return Viewport; }
+	Vec3f m2v(mat<4, 1, float> m) {//矩阵至顶点
+		return Vec3f(m[0][0] / m[3][0], m[1][0] / m[3][0], m[2][0] / m[3][0]);
+	}
+	mat<4, 1, float> v2m(Vec3f v) {//顶点至矩阵
+		mat<4, 1, float> m;
+		m[0][0] = v.x;
+		m[1][0] = v.y;
+		m[2][0] = v.z;
+		m[3][0] = 1.f;
+		return m;
+	}
 };
 
