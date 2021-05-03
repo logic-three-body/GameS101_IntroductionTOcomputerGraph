@@ -283,7 +283,7 @@ void rasterizer::DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGA
 			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) continue;
 			P.z = 0;
 			for (int i = 0; i < 3; i++) P.z += pts[i][2] * bc_screen[i];
-			if (ZBuffer[int(P.x + P.y*width)] > P.z) {
+			if (ZBuffer[int(P.x + P.y*width)] < P.z) {
 				ZBuffer[int(P.x + P.y*width)] = P.z;
 				frameBuffer.setpixel(P.x, P.y, color);
 			}

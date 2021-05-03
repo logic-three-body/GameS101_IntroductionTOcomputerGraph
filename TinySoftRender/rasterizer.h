@@ -69,5 +69,8 @@ public:
 	void viewport(int x, int y, int w, int h);
 	void Prespect_projection(float coeff = 0.f); // coeff = -1/c 透视投影
 	void projection();//正交投影
+	Matrix GetModelView() { return ModelView; }
+	Matrix GetProjection() { return Projection; }
+	Matrix GetViewPort() { return Viewport; }
 };
 
