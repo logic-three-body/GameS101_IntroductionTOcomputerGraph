@@ -381,21 +381,7 @@ void rasterizer::DrawModelFrame(Model & model, int width, int height, Vec3f ligh
 		Vec3f world_coords[3];
 		for (int j = 0; j < 3; j++) {
 			Vec3f v = model.vert(face[j]);
-			for (size_t i = 0; i < 3; i++)//处理顶点坐标
-			{
-				if (std::abs(v[i])>=1)
-				{
-					v[i] /= 10;
-				}
-				else if (std::abs(v[i])>=100)
-				{
-					v[i] /= 100;
-				}
-				else if (std::abs(v[i])<0.01)
-				{
-					v[i] *= 10;
-				}
-			}
+			float weight = v.x + v.y + v.z;
 			//viewport函数不如直接world2screen效果好
 			//screen_coords[j] = m2v(GetViewPort()*GetProjection()*v2m(v));
 			screen_coords[j] = world2screen(m2v(GetProjection()*v2m(v)));

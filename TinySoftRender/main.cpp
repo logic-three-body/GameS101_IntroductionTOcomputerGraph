@@ -1,7 +1,7 @@
 ﻿#include"FrameWork.h"
 #include"global.h"
 int main(int argc, char** argv) {
-	auto path1 = "Lesson4Perspective/Shark/test4.tga";
+	auto path1 = "Lesson4Perspective/Shark/test5.tga";
 	auto path2 = "Lesson4Perspective/Test/test1.tga";
 	rasterizer r(width,height);
 	r.InitZBuffer();
