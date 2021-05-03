@@ -51,12 +51,12 @@ void rasterizer::DrawWireTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor &
 	lineBresenham(p2, p0, color);
 }
 
-void rasterizer::DrawFillTrangile(Trianglei & t, const TGAColor & color)
+void rasterizer::Draw2DFillTrangile(Trianglei & t, const TGAColor & color)
 {
-	DrawFillTrangile(t.p0, t.p1, t.p2, color);
+	Draw2DFillTrangile(t.p0, t.p1, t.p2, color);
 }
 
-void rasterizer::DrawFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
+void rasterizer::Draw2DFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
 {
 	// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) 
 	if (p0.y > p1.y) std::swap(p0, p1);
@@ -89,12 +89,12 @@ void rasterizer::DrawFillTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor &
 	}
 }
 
-void rasterizer::DrawInterpolate2DTrangile(Trianglei&t, const TGAColor&color)
+void rasterizer::Draw2DInterpolateTrangile(Trianglei&t, const TGAColor&color)
 {
-	DrawInterpolate2DTrangile(t.p0, t.p1, t.p2, color);
+	Draw2DInterpolateTrangile(t.p0, t.p1, t.p2, color);
 }
 
-void rasterizer::DrawInterpolate2DTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
+void rasterizer::Draw2DInterpolateTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const TGAColor & color)
 {
 	Vec2i* pts = new Vec2i[3];
 	pts[0] = p0;
@@ -126,7 +126,7 @@ void rasterizer::DrawInterpolate2DTrangile(Vec2i p0, Vec2i p1, Vec2i p2, const T
 	delete[] pts;
 }
 
-void rasterizer::DrawWireFrame(Model & model, int width, int height, const TGAColor & color)
+void rasterizer::Draw2DWireFrame(Model & model, int width, int height, const TGAColor & color)
 {
 	for (int i = 0; i < model.nfaces(); i++) {
 		std::vector<int> face = model.face(i);
@@ -142,17 +142,17 @@ void rasterizer::DrawWireFrame(Model & model, int width, int height, const TGACo
 	}
 }
 
-void rasterizer::DrawWireFrame(Model & model, const TGAColor & color)
+void rasterizer::Draw2DWireFrame(Model & model, const TGAColor & color)
 {
-	DrawWireFrame(model, width, height,color);
+	Draw2DWireFrame(model, width, height,color);
 }
 
-void rasterizer::DrawFlatFrame(Model & model)
+void rasterizer::Draw2DFlatFrame(Model & model)
 {
-	DrawFlatFrame(model, width, height);
+	Draw2DFlatFrame(model, width, height);
 }
 
-void rasterizer::DrawFlatFrame(Model & model, int width, int height)
+void rasterizer::Draw2DFlatFrame(Model & model, int width, int height)
 {
 	for (int i = 0; i < model.nfaces(); i++) {
 		std::vector<int> face = model.face(i);
@@ -161,7 +161,7 @@ void rasterizer::DrawFlatFrame(Model & model, int width, int height)
 			Vec3f world_coords = model.vert(face[j]);
 			screen_coords[j] = Vec2i((world_coords.x + 1.)*width / 2., (world_coords.y + 1.)*height / 2.);
 		}
-		DrawInterpolate2DTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
+		Draw2DInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
 	}
 }
 
@@ -185,7 +185,7 @@ void rasterizer::DrawGray2DFrame(Model & model, int width, int height, Vec3f lig
 		n.normalize();
 		float intensity = n * light_dir;
 		if (intensity > 0) {
-			DrawInterpolate2DTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
+			Draw2DInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
 		}
 	}
 }
@@ -335,13 +335,20 @@ void rasterizer::DrawGrayFrame(Model & model, int width, int height, Vec3f light
 {
 	for (int i = 0; i < model.nfaces(); i++) {
 		std::vector<int> face = model.face(i);
-		Vec3f pts[3];
-		for (int i = 0; i < 3; i++) pts[i] = world2screen(model.vert(face[i]));
-		Triangle3f t(pts);
-		Vec3f n = cross((pts[2] - pts[0]), (pts[1] - pts[0]));
-		n.normalize();
+		Vec3f screen_coords[3];
+		Vec3f world_coords[3];
+		for (int i = 0; i < 3; i++) screen_coords[i] = world2screen(model.vert(face[i]));
+		Triangle3f t(screen_coords);
+		for (int j = 0; j < 3; j++) {
+			Vec3f v = model.vert(face[j]);
+			world_coords[j] = v;
+		}
+		Vec3f n = cross((world_coords[2] - world_coords[0]), (world_coords[1] - world_coords[0])).normalize();
 		float intensity = n * light_dir.normalize();
-		DrawInterpolateTrangile(t, TGAColor(rand() % 255, rand() % 255, rand() % 255, 255));
+		if (0 < intensity)
+		{
+			DrawInterpolateTrangile(t, TGAColor(int(intensity * 255) % 255, int(intensity * 255) % 255, int(intensity * 255) % 255, 255));
+		}
 	}
 }
 
