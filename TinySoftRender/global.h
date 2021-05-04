@@ -11,5 +11,7 @@ const int height = 800;
 const int depth = 255;
 Vec3f light_dir(0,0,-1);
 Vec3f camera(0, 0, 3);
+Vec3f eye(1, 1, 3);
+Vec3f center(0, 0, 0);
 static Model model(path);
 static TGAImage image(width, height, TGAImage::GRAYSCALE);
