@@ -12,7 +12,7 @@ const int height = 800;
 const int depth = 255;
 Vec3f light_dir(0,0,-1);
 Vec3f camera(0, 0, 3);
-Vec3f eye(1, 1, 3);
+Vec3f eye(2, 1, 0);
 //Vec3f eye(-4.074089, 0.647881, -0.122805);
 Vec3f center(0, 0, 0);
 //Vec3f center(-3.798896, 1.250536, 0.070385);
