@@ -1,7 +1,7 @@
 ﻿#include"FrameWork.h"
 #include"global.h"
 int main(int argc, char** argv) {
-	auto path1 = "TriangleTransform/test3.tga";
+	auto path1 = "TriangleTransform/test4.tga";
 	auto path2 = "Lesson5Camera/test1.tga";
 	rasterizer r(width,height);
 	r.InitZBuffer();
@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
 
 
 	Vec3f p0(0, 0, 1), p1(1, 0, 0), p2(0, 1, 0);
-	Vec3f p3(0, 0, -1), p4(-1, 0, 0), p5(0, -1, 0);
+	Vec3f p3(0, 1, 3), p4(1, 0, 3), p5(0, 1, 2);
 	Vec3f pt[3],pt1[3];
 	//pt[0] = r.world2screen(p0);
 	//pt[1] = r.world2screen(p1);
@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 	pt1[1] = r.m2v(r.GetViewPort()*r.v2m(p4));
 	pt1[2] = r.m2v(r.GetViewPort()*r.v2m(p5));
 	Triangle3f t1(pt1);
-	r.DrawInterpolateTrangile(t,white);
+	//r.DrawInterpolateTrangile(t,white);
 	r.DrawInterpolateTrangile(t1, red);
 	//r.DrawModelFrame(model, light_dir);
 	r.WriteBuffer(path1);
