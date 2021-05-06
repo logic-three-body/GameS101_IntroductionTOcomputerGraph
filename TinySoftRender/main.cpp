@@ -1,7 +1,7 @@
 ﻿#include"FrameWork.h"
 #include"global.h"
 int main(int argc, char** argv) {
-	auto path1 = "TriangleTransform/test20.tga";
+	auto path1 = "TriangleTransform/test22.tga";
 	auto path2 = "Lesson5Camera/test1.tga";
 	rasterizer r(width,height);
 	r.InitZBuffer();
@@ -9,7 +9,10 @@ int main(int argc, char** argv) {
 	float cof= -1.f / (eye - center).norm();
 	//r.Prespect_projection(cof);
 	r.projection();
-	r.lookat(eye, center, Vec3f(0,0,1));
+
+	//float scale = 100.0;
+	float scale = -100.0;
+	r.lookat(eye, center*scale, Vec3f(0,0.1,0.1));
 
 
 

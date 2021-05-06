@@ -13,7 +13,7 @@ const int depth = 255;
 Vec3f light_dir(0,0,-1);
 Vec3f eye(0,0,0);
 //Vec3f eye(-4.074089, 0.647881, -0.122805);
-Vec3f center(0.1, 0.1, 0.1);
+Vec3f center(1, 1, 1);
 //Vec3f center(-3.798896, 1.250536, 0.070385);
 static Model model(path2);
 static TGAImage image(width, height, TGAImage::GRAYSCALE);
