@@ -23,3 +23,15 @@ Vec3f barycentric(Vec3f A, Vec3f B, Vec3f C, Vec3f P) {
 	return Vec3f(-1, 1, 1); // in this case generate negative coordinates, it will be thrown away by the rasterizator
 }
 
+typedef struct Camera
+{
+	Vec3f eye;
+	Vec3f target;
+
+	Camera()
+	{
+		eye=Vec3f(0.0, 0.0, 0.0);
+		target= Vec3f(0.0, 0.0, 0.0);
+	}
+};
+
