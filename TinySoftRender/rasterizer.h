@@ -69,6 +69,7 @@ public:
 
 	//变换
 	void lookat(Vec3f eye, Vec3f center, Vec3f up);//模型变换和观察变换
+	void lookatZ();
 	void viewport(int x, int y, int w, int h);//视口变换
 	void viewport(int x, int y, int w, int h,int d);//视口变换
 	void Prespect_projection(float coeff = 0.f); // coeff = -1/c 透视投影
