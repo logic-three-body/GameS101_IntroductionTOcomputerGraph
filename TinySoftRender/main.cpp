@@ -2,7 +2,7 @@
 #include"global.h"
 int main(int argc, char** argv) {
 	auto path1 = "TriangleTransform/test29.tga";
-	auto path2 = "Lesson5Camera/modelp2.tga";
+	auto path2 = "Lesson5Camera/modelp6.tga";
 	rasterizer r(width,height);
 	r.InitZBuffer();
 	r.viewport(width / 8, height / 8, width * 3 / 4, height * 3 / 4, depth);

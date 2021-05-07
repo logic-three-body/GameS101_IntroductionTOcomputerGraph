@@ -382,10 +382,9 @@ void rasterizer::DrawModelFrame(Model & model, int width, int height, Vec3f ligh
 		for (int j = 0; j < 3; j++) {
 			Vec3f v = model.vert(face[j]);
 			//viewport函数不如直接world2screen效果好
-			//screen_coords[j] = m2v(GetViewPort()*GetProjection()*v2m(v));
+			//screen_coords[j] = m2v(Viewport*GetProjection()*v2m(v));
 			//screen_coords[j]= m2v(Viewport*Projection*ModelView*v2m(v));
-			screen_coords[j] = world2screen(m2v(GetProjection()*ModelView*v2m(v)));
-			//screen_coords[j] = world2screen(m2v(GetProjection()*v2m(v)));
+			screen_coords[j] = world2screen(m2v(Projection*ModelView*v2m(v)));
 			world_coords[j] = v;
 		}
 		Vec3f n = cross((world_coords[2] - world_coords[0]), (world_coords[1] - world_coords[0]));
