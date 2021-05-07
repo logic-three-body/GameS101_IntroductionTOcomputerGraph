@@ -390,7 +390,7 @@ void rasterizer::DrawModelFrame(Model & model, int width, int height, Vec3f ligh
 		}
 		Vec3f n = cross((world_coords[2] - world_coords[0]), (world_coords[1] - world_coords[0]));
 		n.normalize();
-		float intensity = n * light_dir;
+		float intensity = n * light_dir.normalize();
 		if (intensity > 0) {
 			DrawInterpolateTrangile(screen_coords[0], screen_coords[1], screen_coords[2], TGAColor(int(intensity * 255) % 255, int(intensity * 255) % 255, int(intensity * 255) % 255, 255));
 		}
