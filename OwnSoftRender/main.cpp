@@ -13,7 +13,7 @@ const int height = 800;
 
 Vec3f light_dir(1,1,1);
 Vec3f       eye(1,1,3);
-Vec3f    center(0,0,0);
+Vec3f    center(1,1,1);
 Vec3f        up(0,1,0);
 
 struct GouraudShader : public IShader {
@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
         model = new Model(argv[1]);
     } else {
        // model = new Model("obj/african_head.obj");
-		model = new Model(imread_path_bunny);
+		model = new Model(imread_path_head);
     }
 
     lookat(eye, center, up);
@@ -64,8 +64,8 @@ int main(int argc, char** argv) {
     zbuffer.flip_vertically();
     //image.  write_tga_file("Gouraud/output1.tga");
     //zbuffer.write_tga_file("Gouraud/zbuffer1.tga");
-	image.write_tga_file(imwrite_path_bunny);
-	zbuffer.write_tga_file(imwrite_pathZ_bunny);
+	image.write_tga_file(imread_path_head);
+	zbuffer.write_tga_file(imread_path_head);
     delete model;
     return 0;
 }
