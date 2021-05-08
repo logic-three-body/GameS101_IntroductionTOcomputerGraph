@@ -11,7 +11,7 @@ extern Matrix Projection;
 void viewport(int x, int y, int w, int h);
 void projection(float coeff=0.f); // coeff = -1/c
 void lookat(Vec3f eye, Vec3f center, Vec3f up);
-
+void lookatZ();
 struct IShader {
     virtual ~IShader();
     virtual Vec4f vertex(int iface, int nthvert) = 0;
