@@ -6,6 +6,7 @@
 #include "geometry.h"
 #include "our_gl.h"
 #include<algorithm>
+#include"path.h"
 Model *model     = NULL;
 const int width  = 800;
 const int height = 800;
@@ -25,8 +26,8 @@ struct GouraudShader : public IShader {
         return gl_Vertex;
     }
 
-    virtual bool fragment(Vec3f bar, TGAColor &color) {
-        float intensity = varying_intensity*bar;   // interpolate intensity for the current pixel
+    virtual bool fragment(Vec3f pixel, TGAColor &color) {
+        float intensity = varying_intensity*pixel;   // interpolate intensity for the current pixel
         color = TGAColor(255, 255, 255)*intensity; // well duh
         return false;                              // no, we do not discard this pixel
     }
@@ -36,7 +37,8 @@ int main(int argc, char** argv) {
     if (2==argc) {
         model = new Model(argv[1]);
     } else {
-        model = new Model("obj/african_head.obj");
+       // model = new Model("obj/african_head.obj");
+		model = new Model(imread_path1);
     }
 
     lookat(eye, center, up);
@@ -59,9 +61,10 @@ int main(int argc, char** argv) {
 
     image.  flip_vertically(); // to place the origin in the bottom left corner of the image
     zbuffer.flip_vertically();
-    image.  write_tga_file("Gouraud/output1.tga");
-    zbuffer.write_tga_file("Gouraud/zbuffer1.tga");
-
+    //image.  write_tga_file("Gouraud/output1.tga");
+    //zbuffer.write_tga_file("Gouraud/zbuffer1.tga");
+	image.write_tga_file(imwrite_path1);
+	zbuffer.write_tga_file(imwrite_pathZ1);
     delete model;
     return 0;
 }
