@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
         model = new Model(argv[1]);
     } else {
        // model = new Model("obj/african_head.obj");
-		model = new Model(imread_path1);
+		model = new Model(imread_path_Jelle);
     }
 
     lookat(eye, center, up);
@@ -63,8 +63,8 @@ int main(int argc, char** argv) {
     zbuffer.flip_vertically();
     //image.  write_tga_file("Gouraud/output1.tga");
     //zbuffer.write_tga_file("Gouraud/zbuffer1.tga");
-	image.write_tga_file(imwrite_path1);
-	zbuffer.write_tga_file(imwrite_pathZ1);
+	image.write_tga_file(imwrite_path_bunny);
+	zbuffer.write_tga_file(imwrite_pathZ_bunny);
     delete model;
     return 0;
 }
