@@ -7,3 +7,4 @@
 #include "geometry.h"//几何运算
 #include"Value.h"//物理量（三角形图元，线等）
 #include"rasterizer.h"//光栅化器
+#include"Shader.h"

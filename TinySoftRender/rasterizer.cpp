@@ -326,6 +326,39 @@ void rasterizer::DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGA
 	}
 }
 
+void rasterizer::DrawInterpolateTrangile(Vec4f * pts, IShader & shader, TGAImage & zbuffer)
+{
+	Vec2f bboxmin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+	Vec2f bboxmax(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+	for (size_t i = 0; i < 3; i++)
+	{
+		for (size_t j = 0; j < 2; j++)
+		{
+			bboxmin[j] = std::min(bboxmin[j], pts[i][j] / pts[i][3]);
+			bboxmax[j] = std::max(bboxmax[j], pts[i][j] / pts[i][3]);
+		}
+	}
+	Vec2i P;
+	TGAColor color;
+	for (P.x=bboxmin.x;P.x<=bboxmax.x;++P.x)
+	{
+		for (P.y=bboxmin.y;P.y<=bboxmax.y;++P.y)
+		{
+			Vec3f c = barycentric(proj<2>(pts[0] / pts[0][3]), proj<2>(pts[1] / pts[1][3]), proj<2>(pts[2] / pts[2][3]), proj<2>(P));
+			float z = pts[0][2] * c.x + pts[1][2] * c.y + pts[2][2] * c.z;
+			float w = pts[0][3] * c.x + pts[1][3] * c.y + pts[2][3] * c.z;
+			int frag_depth = std::max(0, std::min(255, int(z / w + .5)));
+			if (c.x < 0 || c.y < 0 || c.z<0 || zbuffer.getColor(P.x, P.y)[0]>frag_depth) continue;
+			bool discard = shader.fragment(c, color);
+			if (!discard) {
+				zbuffer.setpixel(P.x, P.y, TGAColor(frag_depth));
+				frameBuffer.setpixel(P.x, P.y, color);
+			}
+		}
+	}
+}
+
+
 void rasterizer::DrawGrayFrame(Model & model, Vec3f light_dir)
 {
 	DrawGrayFrame(model, width, height, light_dir);

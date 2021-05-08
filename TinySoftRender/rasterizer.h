@@ -3,6 +3,7 @@
 #include"Value.h"
 #include"geometry.h"
 #include"TGAImage.h"
+#include"Shader.h"
 
 
 
@@ -59,6 +60,7 @@ public:
 	void DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
 	void DrawInterpolateTrangile(Triangle3f&t, const TGAColor&color);
 	void DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGAColor&color);
+	void DrawInterpolateTrangile(Vec4f *pts, IShader &shader, TGAImage &zbuffer);
 	void DrawGrayFrame(Model & model, Vec3f light_dir);
 	void DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir);
 	void DrawColorfulFrame(Model & model);
