@@ -43,11 +43,11 @@ int main(int argc, char** argv) {
 	float eof = -1;
 	eye = eye * eof;
 	light_dir = light_dir * eof;
-    lookat(eye, center, up);
-	//lookatZ();
+    //lookat(eye, center, up);
+	lookatZ();
 	viewport(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
-    projection(-1.f/(eye-center).norm());
-	//projection();
+    //projection(-1.f/(eye-center).norm());
+	projection();
     light_dir.normalize();
 
     TGAImage image  (width, height, TGAImage::RGB);
