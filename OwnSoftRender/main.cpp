@@ -40,10 +40,8 @@ int main(int argc, char** argv) {
        // model = new Model("obj/african_head.obj");
 		model = new Model(imread_path_dragon);
     }
-	//float coef = 10000.0f;
-	//eye = eye * coef;
-
-	
+	float eof = -1;
+	eye = eye * eof;
     lookat(eye, center, up);
 	//lookatZ();
 	viewport(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
@@ -67,6 +65,7 @@ int main(int argc, char** argv) {
     zbuffer.flip_vertically();
     //image.  write_tga_file("Gouraud/output1.tga");
     //zbuffer.write_tga_file("Gouraud/zbuffer1.tga");
+	
 	image.write_tga_file(imwrite_path_Dragon);
 	zbuffer.write_tga_file(imwrite_pathZ_Dragon);
     delete model;
