@@ -1,5 +1,18 @@
 #pragma once
 #include"geometry.h"
+typedef struct Camera
+{
+	Vec3f eye;
+	Vec3f target;
+
+	Camera()
+	{
+		eye = Vec3f(0.0, 0.0, 0.0);
+		target = Vec3f(0.0, 0.0, 0.0);
+	}
+};
+
+
 typedef struct Trianglei
 {
 	Vec2i p0;

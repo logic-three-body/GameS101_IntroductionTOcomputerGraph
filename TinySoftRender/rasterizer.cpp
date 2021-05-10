@@ -5,6 +5,10 @@ void rasterizer::InitZBuffer()
 	ZBuffer = new float[width*height];
 	for (int i = width * height; i--; ZBuffer[i] = -std::numeric_limits<float>::max());
 }
+void rasterizer::InitDepth()
+{
+	DepthBuffer.resize(width, height, TGAImage::RGB);
+}
 void rasterizer::lineBresenham(int x0, int y0, int x1, int y1, const TGAColor & color)
 {
 	bool steep = false;
@@ -326,7 +330,7 @@ void rasterizer::DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGA
 	}
 }
 
-void rasterizer::DrawInterpolateTrangile(Vec4f * pts, IShader & shader, TGAImage & zbuffer)
+void rasterizer::DrawShadingTrangile(Vec4f * pts)
 {
 	Vec2f bboxmin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 	Vec2f bboxmax(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
@@ -348,10 +352,10 @@ void rasterizer::DrawInterpolateTrangile(Vec4f * pts, IShader & shader, TGAImage
 			float z = pts[0][2] * c.x + pts[1][2] * c.y + pts[2][2] * c.z;
 			float w = pts[0][3] * c.x + pts[1][3] * c.y + pts[2][3] * c.z;
 			int frag_depth = std::max(0, std::min(255, int(z / w + .5)));
-			if (c.x < 0 || c.y < 0 || c.z<0 || zbuffer.getColor(P.x, P.y)[0]>frag_depth) continue;
-			bool discard = shader.fragment(c, color);
+			if (c.x < 0 || c.y < 0 || c.z<0 || DepthBuffer.getColor(P.x, P.y)[0]>frag_depth) continue;
+			bool discard = Shader->fragment(c, color);
 			if (!discard) {
-				zbuffer.setpixel(P.x, P.y, TGAColor(frag_depth));
+				DepthBuffer.setpixel(P.x, P.y, TGAColor(frag_depth));
 				frameBuffer.setpixel(P.x, P.y, color);
 			}
 		}
@@ -415,7 +419,6 @@ void rasterizer::DrawModelFrame(Model & model, int width, int height, Vec3f ligh
 		for (int j = 0; j < 3; j++) {
 			Vec3f v = model.vert(face[j]);
 			//viewport函数不如直接world2screen效果好
-			//screen_coords[j] = m2v(Viewport*GetProjection()*v2m(v));
 			//screen_coords[j]= m2v(Viewport*Projection*ModelView*v2m(v));
 			screen_coords[j] = world2screen(m2v(Projection*ModelView*v2m(v)));
 			world_coords[j] = v;
@@ -428,6 +431,18 @@ void rasterizer::DrawModelFrame(Model & model, int width, int height, Vec3f ligh
 		}
 	}
 }
+
+void rasterizer::DrawShadeFrame(Model & model)
+{
+	for (int i = 0; i < model.nfaces(); i++) {
+		Vec4f screen_coords[3];
+		for (int j = 0; j < 3; j++) {
+			screen_coords[j] = Shader->vertex(i, j);
+		}
+		DrawShadingTrangile(screen_coords);
+	}
+}
+
 
 void rasterizer::lookat(Vec3f eye, Vec3f center, Vec3f up)
 {

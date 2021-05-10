@@ -12,18 +12,21 @@ class rasterizer
 private:
 	int width;//光栅化器宽
 	int height;//光栅化器长
-	TGAImage frameBuffer;
+	TGAImage frameBuffer;//帧缓冲
+	TGAImage DepthBuffer;//深度缓冲
 	float* ZBuffer;//深度检测
 	Matrix ModelView;//模型视角变换矩阵
 	Matrix Projection;//透视变换矩阵
 	Matrix Viewport;//视口变换矩阵
-	
+	IShader*Shader;
 public:
 	//构造函数
-	rasterizer() :width(0), height(0) { frameBuffer.resize(width,height,TGAImage::RGB); };
-	rasterizer(int _width, int _height):width(_width),height(_height) { frameBuffer.resize(width, height, TGAImage::RGB); };
+	rasterizer() :width(0), height(0), Shader(nullptr) { frameBuffer.resize(width, height, TGAImage::RGB); };
+	rasterizer(int _width, int _height):width(_width),height(_height), Shader(nullptr) { frameBuffer.resize(width, height, TGAImage::RGB); };
 
 	//功能函数
+	void GetShader(IShader*s) { Shader = s; };
+	void FreeShader() { delete Shader; }
 	void Resize(int _width, int _height) { width = _width; height = _height; };//重定义光栅化器大小
 	void GetFrameBuffer(TGAImage&img) { frameBuffer = img; };
 	TGAImage GiveBuffer() { return frameBuffer; };
@@ -31,10 +34,11 @@ public:
 	void ReadBuffer(const char* path) { frameBuffer.read_tga_file(path); };
 	void ClearBuffer() { frameBuffer.clear(); };
 	void InitZBuffer();
+	void InitDepth();
 	Vec3f world2screen(Vec3f v) {//世界坐标转屏幕坐标
 		return Vec3f(int((v.x + 1.)*width / 2. + .5), int((v.y + 1.)*height / 2. + .5), v.z);
 	}
-
+	
 	//Bresenham绘制线
 	void lineBresenham(int x0, int y0, int x1, int y1,const TGAColor&color);
 	void lineBresenham(Vec2i p0, Vec2i p1,const TGAColor&color);
@@ -60,13 +64,16 @@ public:
 	void DrawInterpolateTrangile(Vec3i p0, Vec3i p1, Vec3i p2, const TGAColor&color);
 	void DrawInterpolateTrangile(Triangle3f&t, const TGAColor&color);
 	void DrawInterpolateTrangile(Vec3f p0, Vec3f p1, Vec3f p2, const TGAColor&color);
-	void DrawInterpolateTrangile(Vec4f *pts, IShader &shader, TGAImage &zbuffer);
+	void DrawShadingTrangile(Vec4f *pts);
 	void DrawGrayFrame(Model & model, Vec3f light_dir);
 	void DrawGrayFrame(Model & model, int width, int height, Vec3f light_dir);
 	void DrawColorfulFrame(Model & model);
 	void DrawColorfulFrame(Model & model, int width, int height);
 	void DrawModelFrame(Model & model, Vec3f light_dir);
 	void DrawModelFrame(Model & model, int width, int height, Vec3f light_dir);
+
+	void DrawShadeFrame(Model &model);
+
 
 
 	//变换
