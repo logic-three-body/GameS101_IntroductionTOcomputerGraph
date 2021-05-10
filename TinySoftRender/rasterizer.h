@@ -26,7 +26,6 @@ public:
 
 	//功能函数
 	void GetShader(IShader*s) { Shader = s; };
-	void FreeShader() { delete Shader; }
 	void Resize(int _width, int _height) { width = _width; height = _height; };//重定义光栅化器大小
 	void GetFrameBuffer(TGAImage&img) { frameBuffer = img; };
 	TGAImage GiveBuffer() { return frameBuffer; };

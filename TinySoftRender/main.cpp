@@ -2,7 +2,7 @@
 #include"global.h"
 int main(int argc, char** argv) {
 	auto path1 = "TriangleTransform/test29.tga";
-	auto path2 = "Lesson5Camera/modelp6.tga";
+	auto path2 = "Lesson6Shader/model.tga";
 	rasterizer r(width,height);
 	r.InitZBuffer();
 	r.InitDepth();
@@ -18,8 +18,7 @@ int main(int argc, char** argv) {
 	shader.getModel(&model);
 	shader.getLightdirect(light_dir);
 	r.GetShader(&shader);
-
-	r.FreeShader();
+	r.DrawShadeFrame(model);
 	r.WriteBuffer(path2);
 	//r.ClearBuffer();
 	//r.WriteBuffer(path2);
