@@ -371,8 +371,9 @@ int main(int argc, const char** argv)
 	//file_name = "models/spot/spot_triangulated_good.obj";
 	//file_name = "models/spot/spot_triangulated.obj";//doesn't have uv
 	//file_name = "models/spot/spot_quadrangulated.obj";//doesn't have uv
-	file_name = "models/spot/spot_control_mesh.obj";
-	file_name = "models/spot/bunny.obj";
+	//file_name = "models/spot/spot_control_mesh.obj";//doesn't have uv
+	//file_name = "models/spot/bunny.obj";
+	file_name = "models/spot/dragon.obj";
 
 	//std::cin >> file_name;
 	bool loadout = Loader.LoadFile(file_name);
