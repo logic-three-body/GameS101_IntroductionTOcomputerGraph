@@ -43,6 +43,8 @@ Eigen::Matrix4f get_model_matrix(float angle)
 	float coef = 1.0f;
 	coef = 2.5f;
 	coef = 5.0f;
+	coef = 7.0f;
+	coef = 8.0f;
 	scale << coef, 0, 0, 0,
 		0, coef, 0, 0,
 		0, 0, coef, 0,
@@ -394,8 +396,9 @@ int main(int argc, const char** argv)
 			TriangleList.push_back(t);
 		}
 	}
-
-	rst::rasterizer r(700, 700);
+	size_t size = 700;
+	size = 2000;
+	rst::rasterizer r(size, size);
 
 	std::string texture_path = "hmap.jpg";
 	//std::string texture_path = "spot_texture.svg";
@@ -461,7 +464,7 @@ int main(int argc, const char** argv)
 		r.set_projection(get_projection_matrix(45.0, 1, 0.1, 50));
 
 		r.draw(TriangleList);
-		cv::Mat image(700, 700, CV_32FC3, r.frame_buffer().data());
+		cv::Mat image(size, size, CV_32FC3, r.frame_buffer().data());
 		image.convertTo(image, CV_8UC3, 1.0f);
 		cv::cvtColor(image, image, cv::COLOR_RGB2BGR);
 
@@ -479,12 +482,12 @@ int main(int argc, const char** argv)
 
 		//r.draw(pos_id, ind_id, col_id, rst::Primitive::Triangle);
 		r.draw(TriangleList);
-		cv::Mat image(700, 700, CV_32FC3, r.frame_buffer().data());
+		cv::Mat image(size, size, CV_32FC3, r.frame_buffer().data());
 		image.convertTo(image, CV_8UC3, 1.0f);
 		cv::cvtColor(image, image, cv::COLOR_RGB2BGR);
 
 		cv::imshow("image", image);
-		key = cv::waitKey(0);
+		key = cv::waitKey(10);
 		std::cout << "frame count: " << frame_count++ << '\n';
 		std::string num = std::to_string(frame_count);
 		if (key == 'a')
