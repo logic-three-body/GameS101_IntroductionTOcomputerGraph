@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
-
+#include<string>
 #include "global.hpp"
 #include "rasterizer.hpp"
 #include "Triangle.hpp"
@@ -354,7 +354,8 @@ int main(int argc, const char** argv)
 	float angle = 140.0;
 	bool command_line = false;
 
-	std::string filename = "output.png";
+	std::string filename = "frame";
+	std::string suffix = ".png";
 	//std::cout << "输入输出文件名\n";
 	//std::cin >> filename;
 	objl::Loader Loader;
@@ -459,6 +460,7 @@ int main(int argc, const char** argv)
 
 		return 0;
 	}
+	filename = "frame";
 	while (key != 'q')
 	{
 		r.clear(rst::Buffers::Color | rst::Buffers::Depth);
@@ -473,18 +475,19 @@ int main(int argc, const char** argv)
 		cv::cvtColor(image, image, cv::COLOR_RGB2BGR);
 
 		cv::imshow("image", image);
-		cv::imwrite(filename, image);
 		key = cv::waitKey(0);
-
+		std::cout << "frame count: " << frame_count++ << '\n';
+		std::string num = std::to_string(frame_count);
 		if (key == 'a')
 		{
 			angle -= RotateAngle;
+			cv::imwrite(filename+num+suffix, image);
 		}
 		else if (key == 'd')
 		{
 			angle += RotateAngle;
+			cv::imwrite(filename + num + suffix, image);
 		}
-
 	}
 	return 0;
 }
