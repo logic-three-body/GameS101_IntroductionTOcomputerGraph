@@ -368,7 +368,12 @@ int main(int argc, const char** argv)
 	// Load .obj File
 	//std::cout << "输入文件路径\n";
 	std::string file_name;
-	file_name = "models/spot/spot_triangulated_good.obj";
+	//file_name = "models/spot/spot_triangulated_good.obj";
+	//file_name = "models/spot/spot_triangulated.obj";//doesn't have uv
+	//file_name = "models/spot/spot_quadrangulated.obj";//doesn't have uv
+	file_name = "models/spot/spot_control_mesh.obj";
+	file_name = "models/spot/bunny.obj";
+
 	//std::cin >> file_name;
 	bool loadout = Loader.LoadFile(file_name);
 	for (auto mesh : Loader.LoadedMeshes)
