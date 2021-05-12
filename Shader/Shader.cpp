@@ -12,7 +12,7 @@
 #include "OBJ_Loader.h"
 //constexpr double MY_PI = 3.1415926;
 inline double DEG2RAD(double deg) { return deg * MY_PI / 180; }
-
+constexpr float RotateAngle = 45;
 
 
 Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
@@ -355,18 +355,20 @@ int main(int argc, const char** argv)
 	bool command_line = false;
 
 	std::string filename = "output.png";
-	std::cout << "输入输出文件名\n";
-	std::cin >> filename;
+	//std::cout << "输入输出文件名\n";
+	//std::cin >> filename;
 	objl::Loader Loader;
-	std::cout << "输入贴图路径\n";
+	//std::cout << "输入贴图路径\n";
 	std::string path_name;
-	std::cin >> path_name;
-	std::string obj_path = path_name;
+	path_name = "models/spot/";
+	//std::cin >> path_name;
+	std::string tex_path = path_name;
 
 	// Load .obj File
-	std::cout << "输入文件路径\n";
+	//std::cout << "输入文件路径\n";
 	std::string file_name;
-	std::cin >> file_name;
+	file_name = "models/spot/spot_triangulated_good.obj";
+	//std::cin >> file_name;
 	bool loadout = Loader.LoadFile(file_name);
 	for (auto mesh : Loader.LoadedMeshes)
 	{
@@ -396,17 +398,17 @@ int main(int argc, const char** argv)
 
 	if (argc >= 2)
 	{
-		command_line = true;
+		//command_line = true;
 		filename = std::string(argv[1]);
 
 		if (argc == 3 && std::string(argv[2]) == "texture")
 		{
 			std::cout << "Rasterizing using the texture shader\n";
 			active_shader = texture_fragment_shader;
-			//texture_path = "spot_texture.png";
-			std::cout << "输入纹理名\n";
-			std::cin >> texture_path;
-			r.set_texture(Texture(obj_path + texture_path));
+			texture_path = "spot_texture.png";
+			//std::cout << "输入纹理名\n";
+			//std::cin >> texture_path;
+			r.set_texture(Texture(tex_path + texture_path));
 		}
 		else if (argc == 3 && std::string(argv[2]) == "normal")
 		{
@@ -475,11 +477,11 @@ int main(int argc, const char** argv)
 
 		if (key == 'a')
 		{
-			angle -= 0.1;
+			angle -= RotateAngle;
 		}
 		else if (key == 'd')
 		{
-			angle += 0.1;
+			angle += RotateAngle;
 		}
 
 	}
