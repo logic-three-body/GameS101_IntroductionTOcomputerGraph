@@ -394,6 +394,7 @@ int main(int argc, const char** argv)
 	//{
 	//	r.set_texture(Texture(obj_path + texture_path));
 	//}
+	r.set_texture(Texture(tex_path + texture_path));
 	std::function<Eigen::Vector3f(fragment_shader_payload)> active_shader = phong_fragment_shader;
 
 	if (argc >= 2)
@@ -423,6 +424,8 @@ int main(int argc, const char** argv)
 		else if (argc == 3 && std::string(argv[2]) == "bump")
 		{
 			std::cout << "Rasterizing using the bump shader\n";
+			//texture_path = "spot_texture.png";
+			//r.set_texture(Texture(tex_path + texture_path));
 			active_shader = bump_fragment_shader;
 		}
 		else if (argc == 3 && std::string(argv[2]) == "displacement")
