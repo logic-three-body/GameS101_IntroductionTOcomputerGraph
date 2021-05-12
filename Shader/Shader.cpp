@@ -388,6 +388,7 @@ int main(int argc, const char** argv)
 	rst::rasterizer r(700, 700);
 
 	std::string texture_path = "hmap.jpg";
+	//std::string texture_path = "spot_texture.svg";
 	//std::cout << "输入纹理名\n";
 	//std::cin >> texture_path;
 	//if (texture_path!="None")
@@ -413,7 +414,6 @@ int main(int argc, const char** argv)
 		}
 		else if (argc == 3 && std::string(argv[2]) == "normal")
 		{
-			std::cout << "Rasterizing using the normal shader\n";
 			active_shader = normal_fragment_shader;
 		}
 		else if (argc == 3 && std::string(argv[2]) == "phong")
