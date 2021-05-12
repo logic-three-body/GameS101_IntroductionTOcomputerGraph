@@ -40,9 +40,12 @@ Eigen::Matrix4f get_model_matrix(float angle)
 		0, 0, 0, 1;
 
 	Eigen::Matrix4f scale;
-	scale << 2.5, 0, 0, 0,
-		0, 2.5, 0, 0,
-		0, 0, 2.5, 0,
+	float coef = 1.0f;
+	coef = 2.5f;
+	coef = 5.0f;
+	scale << coef, 0, 0, 0,
+		0, coef, 0, 0,
+		0, 0, coef, 0,
 		0, 0, 0, 1;
 
 	Eigen::Matrix4f translate;
