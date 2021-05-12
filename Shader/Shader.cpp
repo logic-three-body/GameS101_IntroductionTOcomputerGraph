@@ -44,7 +44,7 @@ Eigen::Matrix4f get_model_matrix(float angle)
 	coef = 2.5f;
 	//coef = 5.0f;
 	//coef = 7.0f;
-	//coef = 8.0f;
+	coef = 8.0f;
 	scale << coef, 0, 0, 0,
 		0, coef, 0, 0,
 		0, 0, coef, 0,
@@ -377,8 +377,8 @@ int main(int argc, const char** argv)
 	//file_name = "models/spot/spot_triangulated.obj";//doesn't have uv
 	//file_name = "models/spot/spot_quadrangulated.obj";//doesn't have uv
 	//file_name = "models/spot/spot_control_mesh.obj";//doesn't have uv
-	file_name = "models/spot/bunny.obj";
-	//file_name = "models/spot/dragon.obj";
+	//file_name = "models/spot/bunny.obj";
+	file_name = "models/spot/dragon.obj";
 
 	//std::cin >> file_name;
 	bool loadout = Loader.LoadFile(file_name);
@@ -399,6 +399,7 @@ int main(int argc, const char** argv)
 	size_t size = 700;
 	//size = 1000;
 	//size = 2000;
+	size = 8000;
 	rst::rasterizer r(size, size);
 
 	std::string texture_path = "hmap.jpg";
