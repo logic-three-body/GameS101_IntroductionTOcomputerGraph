@@ -11,9 +11,13 @@
 // function().
 int main(int argc, char** argv)
 {
-    Scene scene(1280, 960);
-
-    MeshTriangle bunny("models/bunny/bunny.obj");
+	const size_t height = 1280;
+	const size_t width = 960;
+    Scene scene(height, width);
+	auto s1="models/bunny/bunny.obj";
+	auto s2 = "models/bunny/dragon.obj";
+	auto s3 = "models/bunny/spot_triangulated_good.obj";
+    MeshTriangle bunny(s3);
 
     scene.Add(&bunny);
     scene.Add(std::make_unique<Light>(Vector3f(-20, 70, 20), 1));
