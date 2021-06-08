@@ -110,9 +110,23 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
 
 ### 绕Z轴
 
+```c++
+rotateZ << std::cos(angle), -1 * std::sin(angle), 0, 0,
+    std::sin(angle), std::cos(angle), 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1;
+```
+
 ![ZRotate](https://i.loli.net/2021/06/08/i46RI9kdg2f8OKH.gif)
 
 ### 绕任意轴
+
+```c++
+RotateAxis << x * x + (1 - x * x) * cos_angle, x *y *(1 - cos_angle) + z *sin_angle, x *z *(1 - cos_angle) - y *sin_angle, 0,
+    x *y *(1 - cos_angle) - z *sin_angle, y *y + (1 - y * y) * cos_angle, y *z *(1 - cos_angle) + sin_angle, 0,
+    x *z *(1 - cos_angle) + y *sin_angle, y *z *(1 - cos_angle) - x *sin_angle, z *z + (1 - z * z) * cos_angle, 0,
+    0, 0, 0, 1;
+```
 
 ```C++
 Vector3f Vs = { 1,1,1 };
@@ -155,14 +169,47 @@ Eigen::Matrix4f get_model_matrix(Vector3f axis, float angle) {
 
 ### 绕X旋转
 
-![RotateX](E:\college class\coding\ComputerGraph\Introduction\Intro\Roate_Project\img\img\RotateX.gif)
+```c++
+rotateX << 1, 0, 0, 0,
+    0, std::cos(angle), -std::sin(angle), 0,
+    0, std::sin(angle), std::cos(angle), 0,
+    0, 0, 0, 1;
+```
+
+![RotateX](https://i.loli.net/2021/06/08/NifPRGlWwjnJd2b.gif)
 
 ### 绕Y旋转
 
-![RotateY](E:\college class\coding\ComputerGraph\Introduction\Intro\Roate_Project\img\img\RotateY.gif)
+```c++
+rotateY << std::cos(angle), 0, std::sin(angle), 0,
+    0, 1, 0, 0,
+    -std::sin(angle), 0, std::cos(angle), 0,
+    0, 0, 0, 1;
+```
+
+![RotateY](https://i.loli.net/2021/06/08/GwD1bHmiSX5QM6q.gif)
 
 ### 平移 X轴为例
 
+```C++
+float step = -angle / 10.0;
+translateX << 1, 0, 0, step,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1;
+```
 
+![TransX](https://i.loli.net/2021/06/08/hONaZsHByKJzFXk.gif)
 
 ### 缩放
+
+```c++
+//scale with k
+float k = .1 * angle; //scale factor
+scaleK << k, 0, 0, 0,
+    0, k, 0, 0,
+    0, 0, k, 0,
+    0, 0, 0, 1;
+```
+
+![TransX](https://i.loli.net/2021/06/08/cEx8LbiaGXy6HqS.gif)

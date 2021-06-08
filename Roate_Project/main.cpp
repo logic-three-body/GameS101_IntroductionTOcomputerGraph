@@ -34,7 +34,7 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 		0, 0, 0, 1;
 
 	//scale with k
-	float k = .01;//scale factor
+	float k = .1*angle;//scale factor
 	scaleK << k , 0, 0, 0, \
 		0, k, 0, 0, \
 		0, 0, k , 0, \
@@ -51,11 +51,11 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
 		0, 1, 0, 0, \
 		0, 0, 1, step, \
 		0, 0, 0, 1;
-	//model = rotateZ * model;
+	model = rotateZ * model;
 	//model = rotateX * model;
 	//model = rotateY * model;
 	//model = scaleK * model;
-	model *= translateX;
+	//model *= translateX;
 	//model *= translateZ;
 	//model *= translateX*rotateX*scaleK;
 	//model *= rotateZ * scaleK;
