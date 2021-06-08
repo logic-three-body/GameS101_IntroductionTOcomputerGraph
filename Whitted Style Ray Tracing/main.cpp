@@ -22,7 +22,7 @@ int main()
     scene.Add(std::move(sph1));
     scene.Add(std::move(sph2));
 
-    Vector3f verts[4] = {{-5,-3,-6}, {5,-3,-6}, {5,-3,-16}, {-5,-3,-16}};
+    Vector3f verts[4] = {{-5,-3,-6}, {5,-3,-6}, {5,-3,-16}, {-5,-3,-16}};//add floor
     uint32_t vertIndex[6] = {0, 1, 3, 1, 2, 3};
     Vector2f st[4] = {{0, 0}, {1, 0}, {1, 1}, {0, 1}};
     auto mesh = std::make_unique<MeshTriangle>(verts, vertIndex, 2, st);
