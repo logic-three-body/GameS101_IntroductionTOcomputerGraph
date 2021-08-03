@@ -17,7 +17,8 @@ int main(int argc, char** argv)
 	auto s1="models/bunny/bunny.obj";
 	auto s2 = "models/bunny/dragon.obj";
 	auto s3 = "models/bunny/spot_triangulated_good.obj";
-    MeshTriangle bunny(s3);
+	auto s4 = "models/bunny/spot.obj";
+    MeshTriangle bunny(s4);
 
     scene.Add(&bunny);
     scene.Add(std::make_unique<Light>(Vector3f(-20, 70, 20), 1));
