@@ -30,7 +30,9 @@ int main(int argc, char** argv)
     MeshTriangle tallbox("../models/cornellbox/tallbox.obj", white);
     MeshTriangle left("../models/cornellbox/left.obj", red);
     MeshTriangle right("../models/cornellbox/right.obj", green);
-    MeshTriangle light_("../models/cornellbox/light.obj", light);
+	MeshTriangle light_("../models/cornellbox/light.obj", light);
+	MeshTriangle right_light_("../models/cornellbox/lights_right.obj", light);
+	MeshTriangle left_light_("../models/cornellbox/lights_left.obj", light);
 	//MeshTriangle dragon("../models/cornellbox/Dragon.obj", white);
 	MeshTriangle dragon("../models/cornellbox/Dragon_side.obj", white);
 
@@ -39,7 +41,9 @@ int main(int argc, char** argv)
     //scene.Add(&tallbox);
     scene.Add(&left);
     scene.Add(&right);
-    scene.Add(&light_);
+	scene.Add(&light_);
+	scene.Add(&right_light_);
+	scene.Add(&left_light_);
 	scene.Add(&dragon);
 
     scene.buildBVH();
