@@ -31,18 +31,22 @@ int main(int argc, char** argv)
     MeshTriangle left("../models/cornellbox/left.obj", red);
     MeshTriangle right("../models/cornellbox/right.obj", green);
     MeshTriangle light_("../models/cornellbox/light.obj", light);
+	//MeshTriangle dragon("../models/cornellbox/Dragon.obj", white);
+	MeshTriangle dragon("../models/cornellbox/Dragon_side.obj", white);
 
     scene.Add(&floor);
-    scene.Add(&shortbox);
-    scene.Add(&tallbox);
+    //scene.Add(&shortbox);
+    //scene.Add(&tallbox);
     scene.Add(&left);
     scene.Add(&right);
     scene.Add(&light_);
+	scene.Add(&dragon);
 
     scene.buildBVH();
 
     Renderer r;
     int spp = 400;
+	spp = 64;
     if (argc > 1)
     {
         spp = std::atoi(argv[1]);

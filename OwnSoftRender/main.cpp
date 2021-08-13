@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
         model = new Model(argv[1]);
     } else {
        // model = new Model("obj/african_head.obj");
-		model = new Model(imread_path_dragon);
+		model = new Model(imread_path_head);
     }
 	float eof = -1;
 	eye = eye * eof;

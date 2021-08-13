@@ -31,6 +31,7 @@ int main(int argc, char** argv)
 	MeshTriangle left("x64/models/cornellbox/left.obj", red);
 	MeshTriangle right("x64/models/cornellbox/right.obj", green);
 	MeshTriangle light_("x64/models/cornellbox/light.obj", light);
+	
 
 	scene.Add(&floor);
 	scene.Add(&shortbox);
