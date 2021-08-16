@@ -13,14 +13,14 @@
 inline float deg2rad(const float& deg) { return deg * M_PI / 180.0; }
 
 const float EPSILON = 0.00001;
-int g_complateTotals = 0;
+int g_completeTotals = 0;
 std::mutex g_mutex;
 
-void render_thread(std::vector<Vector3f>& fbuffer, const Scene& scene,int spp, int y0, int y1)
+void render_thread(std::vector<Vector3f>& framebuffer, const Scene& scene,int spp, int y0, int y1)
 {
-	float scale = tan(deg2rad(scene.fov * 0.5));
-	float imageAspectRatio = scene.width / (float)scene.height;
-	Vector3f eye_pos(278, 273, -800);
+	float scale = tan(deg2rad(scene.fov * 0.5f));
+	float imageAspectRatio = scene.width / (float)(scene.height);
+	Vector3f eye_pos(278.0f, 273.0f, -800.0f);
 	for (int i = y0; i < y1; i++)
 	{
 		for (int j = 0; j < scene.width; j++)
@@ -30,17 +30,17 @@ void render_thread(std::vector<Vector3f>& fbuffer, const Scene& scene,int spp, i
 			{
 				float x = get_random_float();
 				float y = get_random_float();
-				float _x = (2 * (j + x) / (float)scene.width - 1) *
+				float _x = (2.0f * (j + x) / (float)scene.width - 1) *
 					imageAspectRatio * scale;
-				float _y = (1 - 2 * (i + y) / (float)scene.height) * scale;
-				Vector3f dir = normalize(Vector3f(-_x, _y, 1));
+				float _y = (1.0f - 2.0f * ((float)i + y) / (float)(scene.height)) * scale;
+				Vector3f dir = normalize(Vector3f(-_x, _y, 1.0f));
 				Ray ray = Ray(eye_pos, dir);
-				fbuffer[index] += scene.castRay(ray, 0) / spp;
+				framebuffer[index] += scene.castRay(ray, 0) / (float)spp;
 			}
 		}
 		g_mutex.lock();
-		g_complateTotals++;
-        UpdateProgress(g_complateTotals / (float)scene.height);
+		g_completeTotals++;
+        UpdateProgress(g_completeTotals / (float)scene.height);
 		g_mutex.unlock();
 	}
 }
@@ -52,17 +52,11 @@ void Renderer::Render(const Scene& scene,int spp)
 {
     std::vector<Vector3f> framebuffer(scene.width * scene.height);
 
-    float scale = tan(deg2rad(scene.fov * 0.5));
-    float imageAspectRatio = scene.width / (float)scene.height;
-    Vector3f eye_pos(278, 273, -800);
-
-
-
-    int m = 0;
-    g_complateTotals = 0;
+    g_completeTotals = 0;
 
     std::cout << "SPP: " << spp << "\n";
 
+	//¶àÏß³Ì
 	int numThreads = std::thread::hardware_concurrency();
 	int lines = scene.height / numThreads + 1;
     std::vector<std::thread> wokers;
@@ -83,7 +77,7 @@ void Renderer::Render(const Scene& scene,int spp)
     UpdateProgress(1.f);
 
     // save framebuffer to file
-    FILE* fp = fopen("dragon_side2lights.ppm", "wb");
+    FILE* fp = fopen("binary.ppm", "wb");
     (void)fprintf(fp, "P6\n%d %d\n255\n", scene.width, scene.height);
     for (auto i = 0; i < scene.height * scene.width; ++i) {
         static unsigned char color[3];

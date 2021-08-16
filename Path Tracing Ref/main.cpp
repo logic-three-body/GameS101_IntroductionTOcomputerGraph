@@ -31,31 +31,29 @@ int main(int argc, char** argv)
     MeshTriangle left("../models/cornellbox/left.obj", red);
     MeshTriangle right("../models/cornellbox/right.obj", green);
 	MeshTriangle light_("../models/cornellbox/light.obj", light);
-	MeshTriangle right_light_("../models/cornellbox/lights_right.obj", light);
-	MeshTriangle left_light_("../models/cornellbox/lights_left.obj", light);
+	//MeshTriangle right_light_("../models/cornellbox/lights_right.obj", light);
+	//MeshTriangle left_light_("../models/cornellbox/lights_left.obj", light);
 	//MeshTriangle dragon("../models/cornellbox/Dragon.obj", white);
-	MeshTriangle dragon("../models/cornellbox/Dragon_side.obj", white);
+	//MeshTriangle dragon("../models/cornellbox/Dragon_side.obj", white);
 
     scene.Add(&floor);
-    //scene.Add(&shortbox);
-    //scene.Add(&tallbox);
+    scene.Add(&shortbox);
+    scene.Add(&tallbox);
     scene.Add(&left);
     scene.Add(&right);
 	scene.Add(&light_);
-	scene.Add(&right_light_);
-	scene.Add(&left_light_);
-	scene.Add(&dragon);
+	//scene.Add(&right_light_);
+	//scene.Add(&left_light_);
+	//scene.Add(&dragon);
 
     scene.buildBVH();
 
     Renderer r;
     int spp = 400;
 	spp = 64;
-    if (argc > 1)
-    {
-        spp = std::atoi(argv[1]);
-        spp = std::max(1, spp);
-    }
+	spp = 8;
+	//spp = 1;
+
 
     auto start = std::chrono::system_clock::now();
     r.Render(scene,spp);

@@ -107,7 +107,7 @@ Vector3f Scene::shade(Intersection& hit_obj, Vector3f wo) const
             }
 		}
     }
-
+	//return Lo_dir;
     return Lo_dir + Lo_indir;
 }
 
