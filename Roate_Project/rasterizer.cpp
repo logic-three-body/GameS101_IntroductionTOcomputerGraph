@@ -26,6 +26,7 @@ rst::ind_buf_id rst::rasterizer::load_indices(const std::vector<Eigen::Vector3i>
 }
 
 // Bresenham's line drawing algorithm
+//https://blog.csdn.net/yuanwuwei/article/details/70182793
 // Code taken from a stack overflow answer: https://stackoverflow.com/a/16405254
 void rst::rasterizer::draw_line(Eigen::Vector3f begin, Eigen::Vector3f end)
 {
@@ -40,7 +41,7 @@ void rst::rasterizer::draw_line(Eigen::Vector3f begin, Eigen::Vector3f end)
 
     dx=x2-x1;
     dy=y2-y1;
-    dx1=fabs(dx);
+    dx1=fabs(dx);//absolute value of a floating point value of dx
     dy1=fabs(dy);
     px=2*dy1-dx1;
     py=2*dx1-dy1;
@@ -228,10 +229,10 @@ int rst::rasterizer::get_index(int x, int y)
 
 void rst::rasterizer::set_pixel(const Eigen::Vector3f& point, const Eigen::Vector3f& color)
 {
-    //old index: auto ind = point.y() + point.x() * width;
-    if (point.x() < 0 || point.x() >= width ||
-        point.y() < 0 || point.y() >= height) return;
-    auto ind = (height-point.y())*width + point.x();
-    frame_buf[ind] = color;
+	//old index: auto ind = point.y() + point.x() * width;
+	if (point.x() < 0 || point.x() >= width ||
+		point.y() < 0 || point.y() >= height) return;
+	auto ind = (height - 1 - point.y())*width + point.x();
+	frame_buf[ind] = color;
 }
 

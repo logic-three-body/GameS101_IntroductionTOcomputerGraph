@@ -21,6 +21,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+handin/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -260,3 +261,8 @@ paket-files/
 __pycache__/
 *.pyc
 *.sln
+Bezier_curve/
+Roate_Project/handin/
+Roate_Project/img/img/
+MassSpringSystem/CGL/
+*.avi
